@@ -28,6 +28,7 @@ const CreateCourseForm = () => {
       const response = await axios.post("/api/course/createChapters", {
         title,
         units,
+
       });
       return response.data;
     },
@@ -43,8 +44,8 @@ const CreateCourseForm = () => {
   function onSubmit(data: Input) {
     if (data.units.some((unit) => unit === "")) {
       toast({
-        title: "Error",
-        description: "Please fill all the units",
+        title: "Ошибка",
+        description: "Укажите все главы курса",
         variant: "destructive",
       });
       return;
@@ -52,16 +53,16 @@ const CreateCourseForm = () => {
     createChapters(data, {
       onSuccess: ({ course_id }) => {
         toast({
-          title: "Success",
-          description: "Course created successfully",
+          title: "Успешно",
+          description: "Курс успешно создан",
         });
         router.push(`/create/${course_id}`);
       },
       onError: (error) => {
         console.error(error);
         toast({
-          title: "Error",
-          description: "Something went wrong",
+          title: "Ошибка",
+          description: "Что-то пошло не так",
           variant: "destructive",
         });
       },

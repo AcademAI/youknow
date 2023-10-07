@@ -34,7 +34,7 @@ const GalleryCourseCard = async ({ course }: Props) => {
         </div>
 
         <div className="p-4">
-          <h4 className="text-sm text-secondary-foreground/60">Units</h4>
+          <h4 className="text-sm text-secondary-foreground/60">Главы</h4>
           <div className="space-y-1">
             {course.units.map((unit, unitIndex) => {
               return (

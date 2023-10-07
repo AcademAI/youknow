@@ -39,6 +39,9 @@ const Navbar = async (props: Props) => {
               <SignInButton />
             )}
           </div>
+          <Link href="/" className="ml-3">
+            FAQ
+          </Link>
         </div>
       </div>
     </nav>

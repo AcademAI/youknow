@@ -69,7 +69,7 @@ const CoursePage = async ({ params: { slug } }: Props) => {
                   <ChevronLeft className="w-6 h-6 mr-1" />
                   <div className="flex flex-col items-start">
                     <span className="text-sm text-secondary-foreground/60">
-                      Previous
+                      Предыдущий
                     </span>
                     <span className="text-xl font-bold">
                       {prevChapter.name}
@@ -87,7 +87,7 @@ const CoursePage = async ({ params: { slug } }: Props) => {
                 <div className="flex items-center">
                   <div className="flex flex-col items-start">
                     <span className="text-sm text-secondary-foreground/60">
-                      Next
+                      Следующий
                     </span>
                     <span className="text-xl font-bold">
                       {nextChapter.name}

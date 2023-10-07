@@ -17,7 +17,7 @@ const MainVideoSummary = ({
   return (
     <div className="flex-[2] mt-16">
       <h4 className="text-sm uppercase text-secondary-foreground/60">
-        Глава {unitIndex + 1} &bull; Тема {chapterIndex + 1}
+        Глава {unitIndex + 1} &bull; Раздел {chapterIndex + 1}
       </h4>
       <h1 className="text-4xl font-bold">{chapter.name}</h1>
       <iframe

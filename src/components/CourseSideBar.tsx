@@ -21,7 +21,7 @@ const CourseSideBar = async ({ course, currentChapterId }: Props) => {
         return (
           <div key={unit.id} className="mt-4">
             <h2 className="text-sm uppercase text-secondary-foreground/60">
-              Unit {unitIndex + 1}
+              Глава {unitIndex + 1}
             </h2>
             <h2 className="text-2xl font-bold">{unit.name}</h2>
             {unit.chapters.map((chapter, chapterIndex) => {

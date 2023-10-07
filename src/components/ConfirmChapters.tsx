@@ -39,7 +39,7 @@ const ConfirmChapters = ({ course }: Props) => {
         return (
           <div key={unit.id} className="mt-5">
             <h2 className="text-sm uppercase text-secondary-foreground/60">
-              Unit {unitIndex + 1}
+              Глава {unitIndex + 1}
             </h2>
             <h3 className="text-2xl font-bold">{unit.name}</h3>
             <div className="mt-3">
@@ -69,7 +69,7 @@ const ConfirmChapters = ({ course }: Props) => {
             })}
           >
             <ChevronLeft className="w-4 h-4 mr-2" strokeWidth={4} />
-            Back
+            Назад
           </Link>
           {totalChaptersCount === completedChapters.size ? (
             <Link
@@ -78,7 +78,7 @@ const ConfirmChapters = ({ course }: Props) => {
               })}
               href={`/course/${course.id}/0/0`}
             >
-              Save & Continue
+              Сохранить & Далее
               <ChevronRight className="w-4 h-4 ml-2" />
             </Link>
           ) : (
@@ -93,7 +93,7 @@ const ConfirmChapters = ({ course }: Props) => {
                 });
               }}
             >
-              Generate
+              Создать
               <ChevronRight className="w-4 h-4 ml-2" strokeWidth={4} />
             </Button>
           )}

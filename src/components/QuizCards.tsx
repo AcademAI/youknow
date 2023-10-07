@@ -78,7 +78,7 @@ const QuizCards = ({ chapter }: Props) => {
         })}
       </div>
       <Button className="w-full mt-2" size="lg" onClick={checkAnswer}>
-        Check Answer
+        Проверить ответ
         <ChevronRight className="w-4 h-4 ml-1" />
       </Button>
     </div>

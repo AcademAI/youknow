@@ -15,7 +15,7 @@ export async function POST(req: Request, res: Response) {
     if (!session?.user) {
       return new NextResponse("unauthorised", { status: 401 });
     }
-
+    
     const body = await req.json();
     const { title, units } = createChaptersSchema.parse(body);
 
@@ -54,6 +54,7 @@ export async function POST(req: Request, res: Response) {
       data: {
         name: title,
         image: course_image,
+        userId: session.user.id,  // Add the user ID here
       },
     });
 
