@@ -28,7 +28,6 @@ const CreateCourseForm = () => {
       const response = await axios.post("/api/course/createChapters", {
         title,
         units,
-
       });
       return response.data;
     },

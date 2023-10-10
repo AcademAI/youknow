@@ -2,7 +2,6 @@ import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
-  basePath: 'https://api.proxyapi.ru/openai/v1'
 });
 const openai = new OpenAIApi(configuration);
 
@@ -16,7 +15,7 @@ export async function strict_output(
   default_category: string = "",
   output_value_only: boolean = false,
   model: string = "gpt-3.5-turbo",
-  temperature: number = 1,
+  temperature: number = 0.2,
   num_tries: number = 3,
   verbose: boolean = false
 ) {

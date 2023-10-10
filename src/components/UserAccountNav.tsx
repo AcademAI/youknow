@@ -8,11 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
 import { User } from "next-auth";
 import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 import UserAvatar from "./UserAvatar";
+import Link from "next/link";
+import { Separator } from "./ui/separator";
 
 type Props = {
   user: User;
@@ -33,13 +34,16 @@ const UserAccountNav = ({ user }: Props) => {
                 {user.email}
               </p>
             )}
+             <Separator />
+            {<Link href="/settings" className="w-[200px] truncate text-sm text-secondary-foreground mt-4">Настройки</Link>}
+            {<Link href="/faq" className="w-[200px] truncate text-sm text-secondary-foreground">Частые вопросы</Link>}
           </div>
         </div>
 
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => {
-            signOut();
+            signOut({ callbackUrl: '/feed'});
           }}
           className="text-red-600 cursor-pointer"
         >

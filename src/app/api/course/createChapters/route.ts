@@ -7,6 +7,7 @@ import { strict_output } from "@/lib/gpt";
 import { getUnsplashImage } from "@/lib/unsplash";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
+//import { getToken } from "next-auth/jwt";
 //import { checkSubscription } from "@/lib/subscription";
 
 export async function POST(req: Request, res: Response) {
@@ -15,7 +16,7 @@ export async function POST(req: Request, res: Response) {
     if (!session?.user) {
       return new NextResponse("unauthorised", { status: 401 });
     }
-    
+
     const body = await req.json();
     const { title, units } = createChaptersSchema.parse(body);
 
@@ -26,7 +27,7 @@ export async function POST(req: Request, res: Response) {
         chapter_title: string;
       }[];
     }[];
-
+    // doesn't go past here
     let output_units: outputUnits = await strict_output(
       "You are an AI capable of curating course content, coming up with relevant chapter titles, and finding relevant youtube videos for each chapter",
       new Array(units.length).fill(
@@ -38,6 +39,7 @@ export async function POST(req: Request, res: Response) {
           "an array of chapters, each chapter should have a youtube_search_query and a chapter_title key in the JSON object",
       }
     );
+    console.log(output_units)
 
     const imageSearchTerm = await strict_output(
       "you are an AI capable of finding the most relevant image for a course",
@@ -50,11 +52,12 @@ export async function POST(req: Request, res: Response) {
     const course_image = await getUnsplashImage(
       imageSearchTerm.image_search_term
     );
+
     const course = await prisma.course.create({
       data: {
         name: title,
         image: course_image,
-        userId: session.user.id,  // Add the user ID here
+        userId: session.user.id,
       },
     });
 
