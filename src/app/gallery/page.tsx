@@ -16,8 +16,6 @@ const GalleryPage = async (props: Props) => {
         include: { chapters: true },
       },
     },
-    take: 8,
-    skip: 0
   });
   return (
     <div className="py-8 mx-auto max-w-7xl">
