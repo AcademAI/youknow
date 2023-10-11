@@ -7,7 +7,7 @@ on:
 
 jobs:
   Production:
-    name: Deploy to Production
+    name: Deploy to Homelab
     runs-on: ubuntu-latest
     environment: Production
     steps:
