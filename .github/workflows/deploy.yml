@@ -1,0 +1,33 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Deploy
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{secrets.SSH_HOST}}
+          USER_NAME: ${{secrets.USER_NAME}}
+
+        run: |
+          echo "Deploying to Prod"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} '
+          cd /root/youknow &&
+          git reset --hard &&
+          git checkout main &&
+          git pull origin main &&
+          docker stop youknow &&
+          docker rm youknow &&
+          docker build -t youknow_nextjs . &&
+          docker run --detach --network tunnel --name youknow youknow_nextjs
+          '

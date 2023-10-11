@@ -6,8 +6,3 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    networks:
-      - tunnel
-networks:
-  tunnel:
-    driver: bridge
