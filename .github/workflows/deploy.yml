@@ -16,6 +16,6 @@ jobs:
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ secrets.USER_NAME }}
-          private_key1: ${{ secrets.SSH_PRIVATE_KEY }}
+          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           commands: cd /root/youknow; git reset--hard; git checkout main; git pull origin main; docker stop youknow; docker rm youknow; docker build -t youknow_nextjs .; docker run --detach --network tunnel --name youknow youknow_nextjs
