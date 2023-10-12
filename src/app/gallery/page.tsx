@@ -20,7 +20,7 @@ const GalleryPage = async (props: Props) => {
   return (
     <div className="py-8 mx-auto max-w-7xl">
       <h1 className="self-center text-3xl font-bold text-center sm:text-6xl">
-        Ваши курсы !!!
+        Ваши курсы !!
       </h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 place-items-center mt-5">
         {courses.map((course) => {
