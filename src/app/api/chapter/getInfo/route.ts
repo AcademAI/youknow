@@ -39,7 +39,7 @@ export async function POST(req: Request, res: Response) {
 
     const { summary }: { summary: string } = await strict_output(
       "You are an AI capable of summarising a youtube transcript",
-      "summarise in 250 words or less. do not talk of the sponsors or anything unrelated to the main topic. do not introduce what the summary is about. remember to follow the JSON output format, pay attention to symbols like '' and )(, remember to properly open and close\n" +
+      "summarise in 250 words or less. do not talk of the sponsors or anything unrelated to the main topic. do not introduce what the summary is about.\n" +
         transcript,
       { summary: "summary of the transcript" }
     );
