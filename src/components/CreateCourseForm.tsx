@@ -113,11 +113,11 @@ const CreateCourseForm = () => {
                       return (
                         <FormItem className="flex flex-col items-start w-full sm:items-center sm:flex-row">
                           <FormLabel className="flex-[1] text-xl">
-                            Глава {index + 1}
+                            Раздел {index + 1}
                           </FormLabel>
-                          <FormControl className="flex-[6]">
+                          <FormControl className="flex-[4]">
                             <Input
-                              placeholder="Укажи главу курса"
+                              placeholder="Укажи раздел курса"
                               {...field}
                             />
                           </FormControl>

@@ -39,7 +39,7 @@ const ConfirmChapters = ({ course }: Props) => {
         return (
           <div key={unit.id} className="mt-5">
             <h2 className="text-sm uppercase text-secondary-foreground/60">
-              Глава {unitIndex + 1}
+              Раздел {unitIndex + 1}
             </h2>
             <h3 className="text-2xl font-bold">{unit.name}</h3>
             <div className="mt-3">

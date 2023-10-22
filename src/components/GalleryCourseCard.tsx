@@ -18,13 +18,13 @@ const GalleryCourseCard = async ({ course }: Props) => {
         <div className="relative">
           <Link
             href={`/course/${course.id}/0/0`}
-            className="relative block w-fit"
+            className="relative block "
           >
             <Image
               src={course.image || ""}
-              className="object-cover w-full max-h-[300px] rounded-t-lg"
-              width={300}
-              height={300}
+              className="object-contain rounded-t-lg"
+              width={500}
+              height={500}
               alt="picture of the course"
             />
             <span className="absolute px-2 py-1 text-white rounded-md bg-black/60 w-fit bottom-2 left-2 right-2">
@@ -34,7 +34,7 @@ const GalleryCourseCard = async ({ course }: Props) => {
         </div>
 
         <div className="p-4">
-          <h4 className="text-sm text-secondary-foreground/60">Главы</h4>
+          <h4 className="text-sm text-secondary-foreground/60">Разделы</h4>
           <div className="space-y-1">
             {course.units.map((unit, unitIndex) => {
               return (

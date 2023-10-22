@@ -62,7 +62,7 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, Props>(
             setSuccess(false);
             toast({
               title: "Ошибка",
-              description: "Ошибка при загрузке раздела",
+              description: "Ошибка при загрузке главы",
               variant: "destructive",
             });
             addChapterIdToSet();

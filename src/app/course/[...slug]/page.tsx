@@ -44,61 +44,73 @@ const CoursePage = async ({ params: { slug } }: Props) => {
   const nextChapter = unit.chapters[chapterIndex + 1];
   const prevChapter = unit.chapters[chapterIndex - 1];
   return (
-    <div>
-      <CourseSideBar course={course} currentChapterId={chapter.id} />;
-      <div>
-        <div className="ml-[400px] px-8">
-          <div className="flex">
-            <MainVideoSummary
-              chapter={chapter}
-              chapterIndex={chapterIndex}
-              unit={unit}
-              unitIndex={unitIndex}
-            />
-            <QuizCards chapter={chapter} />
-          </div>
+    <div className="flex flex-col min-h-full">
+      <div className="flex items-start w-full px-4 py-10 mx-auto gap-x-8 sm:px-6 lg:px-8">
+      <aside className="sticky hidden w-1/5 top-8 lg:block">
+        <CourseSideBar course={course} currentChapterId={chapter.id} />
+      </aside>
+        <main className="flex-1 w-3/5">
+          <div className="px-8">
+            <div className="flex flex-col">
+              <MainVideoSummary
+                chapter={chapter}
+                chapterIndex={chapterIndex}
+                unit={unit}
+                unitIndex={unitIndex}
+              />
+              <div className="block xl:hidden">
+                <QuizCards chapter={chapter} />
+              </div>
+              <div className="block mt-4 lg:hidden">
+                <CourseSideBar course={course} currentChapterId={chapter.id} />
+              </div>
+            </div>
 
-          <div className="flex-[1] h-[1px] mt-4 text-gray-500 bg-gray-500" />
-          <div className="flex pb-8">
-            {prevChapter && (
-              <Link
-                href={`/course/${course.id}/${unitIndex}/${chapterIndex - 1}`}
-                className="flex mt-4 mr-auto w-fit"
-              >
-                <div className="flex items-center">
-                  <ChevronLeft className="w-6 h-6 mr-1" />
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm text-secondary-foreground/60">
-                      Предыдущий
-                    </span>
-                    <span className="text-xl font-bold">
-                      {prevChapter.name}
-                    </span>
+            <div className="flex-[1] h-[1px] mt-4 text-gray-500 bg-gray-500" />
+            <div className="flex pb-8">
+              {prevChapter && (
+                <Link
+                  href={`/course/${course.id}/${unitIndex}/${chapterIndex - 1}`}
+                  className="flex mt-4 mr-auto w-fit"
+                >
+                  <div className="flex items-center">
+                    <ChevronLeft className="w-6 h-6 mr-1" />
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm text-secondary-foreground/60">
+                        Предыдущий
+                      </span>
+                      <span className="text-xl font-bold">
+                        {prevChapter.name}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            )}
+                </Link>
+              )}
 
-            {nextChapter && (
-              <Link
-                href={`/course/${course.id}/${unitIndex}/${chapterIndex + 1}`}
-                className="flex mt-4 ml-auto w-fit"
-              >
-                <div className="flex items-center">
-                  <div className="flex flex-col items-start">
-                    <span className="text-sm text-secondary-foreground/60">
-                      Следующий
-                    </span>
-                    <span className="text-xl font-bold">
-                      {nextChapter.name}
-                    </span>
+              {nextChapter && (
+                <Link
+                  href={`/course/${course.id}/${unitIndex}/${chapterIndex + 1}`}
+                  className="flex mt-4 ml-auto w-fit"
+                >
+                  <div className="flex items-center">
+                    <div className="flex flex-col items-start">
+                      <span className="text-sm text-secondary-foreground/60">
+                        Следующий
+                      </span>
+                      <span className="text-xl font-bold">
+                        {nextChapter.name}
+                      </span>
+                    </div>
+                    <ChevronRight className="w-6 h-6 ml-1" />
                   </div>
-                  <ChevronRight className="w-6 h-6 ml-1" />
-                </div>
-              </Link>
-            )}
+                </Link>
+              )}
+            </div>
           </div>
-        </div>
+        </main>
+        <aside className="sticky hidden w-1/5 top-8 shrink-0 xl:block">
+        <QuizCards chapter={chapter} />
+        </aside>
       </div>
     </div>
   );

@@ -41,7 +41,7 @@ const CreateChapters = async ({ params: { courseId } }: Props) => {
       <div className="flex p-4 mt-5 border-none bg-secondary">
         <Info className="w-12 h-12 mr-3 text-blue-400" />
         <div>
-          ИИ сгенерировал разделы под каждую главу, которую вы указали. Нажмите сохранить и продолжить.
+          ИИ сгенерировал главы под каждый раздел, которые вы указали. Нажмите создать чтобы наполнить курс.
         </div>
       </div>
       <ConfirmChapters course={course} />

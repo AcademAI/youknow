@@ -5,7 +5,7 @@ export async function searchYoutube(searchQuery: string) {
   searchQuery = encodeURIComponent(searchQuery);
   console.log(searchQuery)
   const response = await fetch(
-    `http://172.19.0.4:8224/search?searchQuery=${searchQuery}&maxResults=1`
+    `http://localhost:8224/search?searchQuery=${searchQuery}&maxResults=1`
   );
 
   // Check if the response is ok
@@ -45,7 +45,7 @@ export async function getTranscript(videoId: string) {
 
 export async function getQuestionsFromTranscript(
   transcript: string,
-  course_title: string
+  chapter_name: string
 ) {
   type Question = {
     question: string;
@@ -56,17 +56,20 @@ export async function getQuestionsFromTranscript(
   };
   
   const questions: Question[] = await strict_output(
-    "You are a helpful AI that is able to generate mcq questions and answers, the length of each answer should not be more than 15 words",
+    "Ты - помощник, способный генерировать вопросы и ответы, длина каждого Q или A не должна превышать 15 слов. В ответе верни массив, состоящий из JSON объектов.",
     new Array(5).fill(
-      `You are to generate a random hard mcq question about ${course_title} with context of the following transcript: ${transcript}`
+      `Сгенерируй сложный вопрос о главе: ${chapter_name} исходя из этого текста:\n" +
+       ${transcript}`
     ),
     {
-      question: "question",
-      answer: "answer with max length of 15 words",
-      option1: "option1 with max length of 15 words",
-      option2: "option2 with max length of 15 words",
-      option3: "option3 with max length of 15 words",
+      question: "вопрос",
+      answer: "правильный ответ",
+      option1: 'вариант 1',
+      option2: 'вариант 2',
+      option3: 'вариант 3',
+     
     }
   );
+  console.log({questions})
   return questions;
 }

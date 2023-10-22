@@ -48,6 +48,7 @@ model User {
   accounts Account[]
   sessions Session[]
   courses  Course[]
+  messages Message[]
 }
 
 model Course {
@@ -83,7 +84,7 @@ model Chapter {
   summary            String?    @db.VarChar(3000)
   unit               Unit       @relation(fields: [unitId], references: [id])
   questions          Question[]
-
+  messages          Message[]
   @@index([unitId], name: "unitId")
 }
 
@@ -98,3 +99,17 @@ model Question {
 
   @@index([chapterId], name: "chapterId")
 }
+
+model Message {
+  id        String @id @default(cuid())
+  chapterId String
+  userId String    
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter  Chapter @relation(fields: [chapterId], references: [id])
+
+  @@index([chapterId], name: "chapterId")
+  @@index([userId], name: "id")
+
+}
+

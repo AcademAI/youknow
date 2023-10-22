@@ -1,13 +1,14 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+}
+);
 
 interface OutputFormat {
   [key: string]: string | string[] | OutputFormat;
 }
+
 export async function strict_output(
   system_prompt: string,
   user_prompt: string | string[],
@@ -15,7 +16,7 @@ export async function strict_output(
   default_category: string = "",
   output_value_only: boolean = false,
   model: string = "gpt-3.5-turbo",
-  temperature: number = 0.2,
+  temperature: number = 0.1,
   num_tries: number = 3,
   verbose: boolean = false
 ) {
@@ -51,7 +52,7 @@ export async function strict_output(
     }
 
     // Use OpenAI to get a response
-    const response = await openai.createChatCompletion({
+    const response = await openai.chat.completions.create({
       temperature: temperature,
       model: model,
       messages: [
@@ -64,7 +65,7 @@ export async function strict_output(
     });
 
     let res: string =
-      response.data.choices[0].message?.content?.replace(/'/g, '"') ?? "";
+      response.choices[0].message?.content?.replace(/'/g, '"') ?? "";
 
     // ensure that we don't replace away apostrophes in text
     res = res.replace(/(\w)"(\w)/g, "$1'$2");

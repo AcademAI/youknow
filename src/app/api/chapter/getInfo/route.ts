@@ -27,7 +27,7 @@ export async function POST(req: Request, res: Response) {
       return NextResponse.json(
         {
           success: false,
-          error: "Chapter not found",
+          error: "Глава не найдена",
         },
         { status: 404 }
       );
@@ -37,17 +37,20 @@ export async function POST(req: Request, res: Response) {
     let maxLength = 500;
     transcript = transcript.split(" ").slice(0, maxLength).join(" ");
 
-    const { summary }: { summary: string } = await strict_output(
-      "You are an AI capable of summarising a youtube transcript",
-      "summarise in 250 words or less. do not talk of the sponsors or anything unrelated to the main topic. do not introduce what the summary is about.\n" +
+    const {summary}: {summary: string} = await strict_output(
+      "Ты - помощник, способный делать краткое содержание транскрипта youtube видео. В ответе верни JSON объект.",
+      "Сделай краткое содержание в 250 словах или менее, не говори о спонсорах или рекламе, не имеющих отношения к основной теме текста далее:\n" +
         transcript,
-      { summary: "summary of the transcript" }
+      { summary: "краткое содержания видео в типе string" }
     );
 
+    // вот здесь все ломается нахуй
+    /*
     const questions = await getQuestionsFromTranscript(
       transcript,
       chapter.name
     );
+    
 
     await prisma.question.createMany({
       data: questions.map((question) => {
@@ -66,6 +69,7 @@ export async function POST(req: Request, res: Response) {
         };
       }),
     });
+    */
 
     await prisma.chapter.update({
       where: { id: chapterId },

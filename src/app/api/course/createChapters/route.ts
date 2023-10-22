@@ -29,23 +29,23 @@ export async function POST(req: Request, res: Response) {
     }[];
     // doesn't go past here
     let output_units: outputUnits = await strict_output(
-      "You are an AI capable of curating course content, coming up with relevant chapter titles, and finding relevant youtube videos for each chapter",
+      "Ты - помощник, способный курировать содержание курса, придумывать соответствующие названия глав и находить подходящие видеоролики на youtube для каждой главы. В ответе верни массив, состоящий из JSON объектов глав.",
       new Array(units.length).fill(
-        `It is your job to create a course about ${title}. The user has requested to create chapters for each of the units. Then, for each chapter, provide a detailed youtube search query that can be used to find an informative educationalvideo for each chapter. Each query should give an educational informative course in youtube.`
+        `Твоя задача - создать курс о ${title}. Сгенерируй главы под каждый раздел: ${units}. Затем для каждой главы сгенерируй подробный поисковый запрос в youtube, по которому можно найти познавательный образовательный видеоролик для главы.`
       ),
       {
-        title: "title of the unit",
+        title: "название раздела",
         chapters:
-          "an array of chapters, each chapter should have a youtube_search_query and a chapter_title key in the JSON object",
+          "массив глав, каждая глава должна иметь youtube_search_query и ключ chapter_title в JSON-объекте",
       }
     );
     console.log(output_units)
 
     const imageSearchTerm = await strict_output(
-      "you are an AI capable of finding the most relevant image for a course",
-      `Please provide a good image search term for the title of a course about ${title}. This search term will be fed into the unsplash API, so make sure it is a good search term that will return good results`,
+      "Ты - помощник, способный найти наиболее подходящее изображение для курса",
+      `Придумай поисковый запрос для названия курса ${title} на английском языке. Этот поисковый запрос будет передан в API unsplash, поэтому убедитесь, что это хороший поисковый запрос на английском языке, который вернет хорошие результаты`,
       {
-        image_search_term: "a good search term for the title of the course",
+        image_search_term: "хороший поисковый запрос по названию курса на английском языке",
       }
     );
 
