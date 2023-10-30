@@ -42,10 +42,10 @@ export async function POST(req: Request, res: Response) {
     console.log(output_units)
 
     const imageSearchTerm = await strict_output(
-      "Ты - помощник, способный найти наиболее подходящее изображение для курса",
-      `Придумай поисковый запрос для названия курса ${title} на английском языке. Этот поисковый запрос будет передан в API unsplash, поэтому убедитесь, что это хороший поисковый запрос на английском языке, который вернет хорошие результаты`,
+      "you are an AI capable of finding the most relevant image for a course",
+      `Please provide a good image search term for the title of a course about ${title}. This search term will be fed into the unsplash API, so make sure it is a good search term that will return good results`,
       {
-        image_search_term: "хороший поисковый запрос по названию курса на английском языке",
+        image_search_term: "a good search term for the title of the course",
       }
     );
 

@@ -14,13 +14,13 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
-//import SubscriptionAction from "./SubscriptionAction";
+import SubscriptionAction from "./SubscriptionAction";
 
-type Props = {};
+type Props = { isPro: boolean };
 
 type Input = z.infer<typeof createChaptersSchema>;
 
-const CreateCourseForm = () => {
+const CreateCourseForm = ( { isPro }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
   const { mutate: createChapters, isLoading } = useMutation({
@@ -44,7 +44,23 @@ const CreateCourseForm = () => {
     if (data.units.some((unit) => unit === "")) {
       toast({
         title: "Ошибка",
-        description: "Укажите все главы курса",
+        description: "Заполните все разделы курса",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (data.units.every((unit) => unit === "")) {
+      toast({
+        title: "Ошибка",
+        description: "Укажите хотя бы один раздел курса",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (data.units.length > 10) {
+      toast({
+        title: "Ошибка",
+        description: "Укажите не более 10 разделов",
         variant: "destructive",
       });
       return;
@@ -169,7 +185,7 @@ const CreateCourseForm = () => {
           </Button>
         </form>
       </Form>
-
+      {!isPro && <SubscriptionAction />}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import GalleryCourseCard from "@/components/GalleryCourseCard";
+import FeedCourseCard from "@/components/FeedCourseCard";
 import { prisma } from "@/lib/db";
 import React from "react";
 
@@ -22,7 +22,7 @@ const FeedPage = async (props: Props) => {
       </h1>
       <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0 mt-8">
         {courses.map((course) => {
-          return <GalleryCourseCard course={course} key={course.id} />;
+          return <FeedCourseCard course={course} key={course.id} />;
         })}
       </div>
     </div>

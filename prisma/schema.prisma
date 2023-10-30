@@ -44,6 +44,7 @@ model User {
   emailVerified DateTime?
   image         String?
   credits       Int       @default(2)
+  role          String    @default("user")
 
   accounts Account[]
   sessions Session[]
@@ -51,65 +52,64 @@ model User {
   messages Message[]
 }
 
+// добавить просмотры, кнопку избранное и удалить
 model Course {
-  id    String @id @default(cuid())
-  name  String
-  image String
+  id     String @id @default(cuid())
+  name   String
+  image  String
+  views  Int    @default(0)
   userId String
-  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  units Unit[]
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  units  Unit[]
 
   @@index([userId], name: "id")
 }
 
 // unit contains many chapters
 model Unit {
-  id       String @id @default(cuid())
+  id       String    @id @default(cuid())
   courseId String
-
   name     String
-  course   Course    @relation(fields: [courseId], references: [id])
+  course   Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
   chapters Chapter[]
 
   @@index([courseId], name: "courseId")
 }
 
 model Chapter {
-  id     String @id @default(cuid())
-  unitId String
-
+  id                 String     @id @default(cuid())
+  unitId             String
   name               String
   youtubeSearchQuery String
   videoId            String?
   summary            String?    @db.VarChar(3000)
-  unit               Unit       @relation(fields: [unitId], references: [id])
+  unit               Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
   questions          Question[]
-  messages          Message[]
+  messages           Message[]
+
   @@index([unitId], name: "unitId")
 }
 
 model Question {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   chapterId String
-
-  question String  @db.VarChar(3000)
-  answer   String  @db.VarChar(3000)
-  options  String  @db.VarChar(3000)
-  chapter  Chapter @relation(fields: [chapterId], references: [id])
+  question  String  @db.VarChar(3000)
+  answer    String  @db.VarChar(3000)
+  options   String  @db.VarChar(3000)
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@index([chapterId], name: "chapterId")
 }
 
+// добавить сообщения к главам
 model Message {
-  id        String @id @default(cuid())
-  chapterId String
-  userId String    
-
-  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chapter  Chapter @relation(fields: [chapterId], references: [id])
+  id          String  @id @default(cuid())
+  messageText String  @db.VarChar(250)
+  chapterId   String
+  userId      String
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter     Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
   @@index([chapterId], name: "chapterId")
   @@index([userId], name: "id")
-
 }
-
