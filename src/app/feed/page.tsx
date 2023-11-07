@@ -1,10 +1,12 @@
 import FeedCourseCard from "@/components/FeedCourseCard";
+import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import React from "react";
 
 type Props = {};
 
 const FeedPage = async (props: Props) => {
+  const session = await getAuthSession();
   const courses = await prisma.course.findMany({
     include: {
       units: {
@@ -22,7 +24,7 @@ const FeedPage = async (props: Props) => {
       </h1>
       <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0 mt-8">
         {courses.map((course) => {
-          return <FeedCourseCard course={course} key={course.id} />;
+          return <FeedCourseCard course={course} role={session?.user.role} key={course.id} />;
         })}
       </div>
     </div>

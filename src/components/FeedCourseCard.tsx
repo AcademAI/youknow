@@ -1,4 +1,5 @@
 import { Chapter, Course, Unit } from "@prisma/client";
+import DeleteCourseButton from "@/components/DeleteCourseButton";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -9,13 +10,13 @@ type Props = {
       chapters: Chapter[];
     })[];
   };
+  role: string | undefined;
 };
 
-const FeedCourseCard = async ({ course }: Props) => {
+const FeedCourseCard = async ({ course, role }: Props) => {
   return (
     <>
-      <div className="border rounded-lg border-secondary">
-        <div className="relative">
+      <div className="border rounded-lg border-secondary relative">
           <Link
             href={`/course/${course.id}/0/0`}
             className="relative block "
@@ -31,7 +32,6 @@ const FeedCourseCard = async ({ course }: Props) => {
               {course.name}
             </span>
           </Link>
-        </div>
 
         <div className="p-4">
           <h4 className="text-sm text-secondary-foreground/60">Разделы</h4>
@@ -48,6 +48,9 @@ const FeedCourseCard = async ({ course }: Props) => {
               );
             })}
           </div>
+        </div>
+        <div className="absolute bottom-2 right-2">
+          {role === "admin" && <DeleteCourseButton course={course} />}
         </div>
       </div>
     </>

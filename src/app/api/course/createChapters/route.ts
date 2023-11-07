@@ -58,6 +58,7 @@ export async function POST(req: Request, res: Response) {
         name: title,
         image: course_image,
         userId: session.user.id,
+        views: 0,
       },
     });
 

@@ -18,7 +18,7 @@ export async function POST(req: Request, res: Response) {
     });
 
     const body = await req.json();
-    const { courseId  } = bodyParser.parse(body);
+    const { courseId } = bodyParser.parse(body);
 
     const user = await prisma.user.findUnique({
       where: {
@@ -29,7 +29,48 @@ export async function POST(req: Request, res: Response) {
       },
     });
 
-    if (user) {
+    if (user?.role === "admin") {
+      const course = await prisma.course.findUnique({
+        where: {
+          id: courseId,
+        },
+      });
+      if (course) {
+        const userId = course.userId;
+        const courseOwner = await prisma.user.findUnique({
+          where: {
+            id: userId,
+          },
+          include: {
+            courses: true,
+          }
+        });
+        if (courseOwner) {
+          const courseIndex = courseOwner.courses.findIndex((course) => course.id === courseId);
+          if (courseIndex !== -1) {
+            const deletedCourse = await prisma.course.delete({
+              where: {
+                id: courseId,
+              },
+            });
+            courseOwner.courses.splice(courseIndex, 1);
+            await prisma.user.update({
+              where: {
+                id: userId,
+              },
+              data: {
+                courses: {
+                  set: courseOwner.courses,
+                },
+              },
+            });
+            return NextResponse.json({ course_id: deletedCourse.id });
+          }
+        }
+      }
+    }
+
+    else if (user && user?.role !== "admin") {
       const courseIndex = user.courses.findIndex((course) => course.id === courseId);
       if (courseIndex !== -1) {
         const deletedCourse = await prisma.course.delete({
@@ -58,3 +99,4 @@ export async function POST(req: Request, res: Response) {
     console.error(error);
   }
 }
+
