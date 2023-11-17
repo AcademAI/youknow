@@ -2,7 +2,7 @@ import { DefaultSession, NextAuthOptions, getServerSession } from "next-auth";
 import { prisma } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
-import { Course } from "@prisma/client";
+import YandexProvider from "next-auth/providers/yandex";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -59,6 +59,10 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    YandexProvider({
+      clientId: process.env.YANDEX_CLIENT_ID as string,
+      clientSecret: process.env.YANDEX_CLIENT_SECRET as string
+    })
   ],
   theme: {
     colorScheme: "auto", // "auto" | "dark" | "light"

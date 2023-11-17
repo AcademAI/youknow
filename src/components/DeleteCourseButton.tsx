@@ -51,7 +51,6 @@ const DeleteCourseButton = ({ course }: Props) => {
 
   return (
     <Button variant="ghost" onClick={handleDelete} disabled={loading}>
-      Удалить
       <Trash className="w-4 h-4 ml-2 text-red-500" />
     </Button>
   );

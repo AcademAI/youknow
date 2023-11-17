@@ -23,7 +23,7 @@ const GalleryPage = async (props: Props) => {
   return (
     <div className="py-8 mx-auto max-w-7xl">
       <h1 className="self-center text-3xl font-bold text-center sm:text-6xl">
-        Ваши курсы
+        Мои курсы
       </h1>
       <div className="flex flex-col items-center mt-2">
         <div className="mt-2">

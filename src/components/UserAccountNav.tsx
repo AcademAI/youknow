@@ -43,7 +43,7 @@ const UserAccountNav = ({ user }: Props) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => {
-            signOut({ callbackUrl: '/feed'});
+            signOut({ callbackUrl: '/'});
           }}
           className="text-red-600 cursor-pointer"
         >

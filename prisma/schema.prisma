@@ -65,7 +65,7 @@ model Course {
   @@index([userId], name: "id")
 }
 
-// unit contains many chapters
+// раздел
 model Unit {
   id       String    @id @default(cuid())
   courseId String

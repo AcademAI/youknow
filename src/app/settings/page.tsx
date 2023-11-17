@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import SubscriptionButton from "@/components/SubscriptionButton";
 //import { checkSubscription } from "@/lib/subscription";
 import React from "react";
@@ -12,8 +13,9 @@ const SettingsPage = async (props: Props) => {
           У вас нет подписки на сервис 
         </p>
 
-      
+        <Footer />
     </div>
+    
   );
 };
 

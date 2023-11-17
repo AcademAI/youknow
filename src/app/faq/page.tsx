@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import { InfoIcon, ListChecksIcon, RussianRuble } from "lucide-react";
 
 type Props = {};
@@ -54,9 +55,10 @@ const FAQ = async (props: Props) => {
         <div>
           Платформа находится в тестовом билде, фидбэк и предложения по улучшению можно отправить <b><a href="https://academai.ru/#contact" target="noopener">здесь</a></b>
         </div>
+        <Footer />
       </div>
     </div>
-
+    
 
   )
 }

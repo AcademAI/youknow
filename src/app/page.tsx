@@ -1,62 +1,35 @@
-import { InfoIcon, ListChecksIcon, RussianRuble } from "lucide-react";
+import FeedCourseCard from "@/components/FeedCourseCard";
+import { getAuthSession } from "@/lib/auth";
+import { prisma } from "@/lib/db";
+import React from "react";
 
 type Props = {};
 
-const Home = async (props: Props) => {
-
+const FeedPage = async (props: Props) => {
+  const session = await getAuthSession();
+  const courses = await prisma.course.findMany({
+    include: {
+      units: {
+        include: { chapters: true },
+      },
+      user: true,
+    },
+    orderBy: {
+      id: "desc",
+    }
+  });
   return (
-
-    <div className="flex flex-col items-start max-w-xl px-8 mx-auto my-16 sm:px-0">
+    <div className="py-8 mx-auto max-w-7xl">
       <h1 className="self-center text-3xl font-bold text-center sm:text-6xl">
-        ЧАВО
+        Лента курсов
       </h1>
-
-      <div className="mt-5 font-bold">
-        Что можно делать на платформе сейчас?
-      </div>
-      <div className="flex p-4 mt-5 border-none bg-secondary">
-        <ListChecksIcon className="w-12 h-12 mr-3 text-blue-400" />
-        <div>
-          <ul>
-            <li>Генерировать себе персонализированные курсы</li>
-            <li>Проверять свои знания через тесты</li>
-            <li>Получать краткие сводки по содержанию</li>
-            <li>Смотреть ленту курсов</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="mt-5 font-bold">
-        Сколько курсов доступно пользователю?
-      </div>
-
-      <div className="flex p-4 mt-5 border-none bg-secondary">
-        <RussianRuble className="w-12 h-12 mr-3 text-blue-400" />
-        <div>
-          <ul>
-            <li>Новому пользователю доступно 2 бесплатных курса</li>
-            <li>В стабильном билде это количество будет увеличено до 5</li><br />
-            <li>Будут доступные следующие варианты подписок:</li> 
-            <b>Студент (2000 рублей):</b>
-            <li>- 10 курсов в месяц</li>
-            <b>Преподаватель (5000 рублей):</b>
-            <li>- 30 курсов в месяц</li>
-            <li>- выгрузка всех созданных курсов</li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="mt-5 font-bold">
-        Почему так лагает? Неправильное/неполное содержание курса?
-      </div>
-      <div className="flex p-4 mt-5 border-none bg-secondary">
-        <InfoIcon className="w-12 h-12 mr-3 text-blue-400" />
-        <div>
-          Платформа находится в тестовом билде, фидбэк и предложения по улучшению можно отправить <b><a href="https://academai.ru/#contact" target="noopener">здесь</a></b>
-        </div>
+      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0 mt-8">
+        {courses.map((course) => {
+          return <FeedCourseCard course={course} user={course.user} role={session?.user.role} key={course.id} />;
+        })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home;
+export default FeedPage;

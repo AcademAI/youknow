@@ -1,4 +1,5 @@
 import { Chapter, Course, Unit } from "@prisma/client";
+import { Eye } from "lucide-react";
 import DeleteCourseButton from "@/components/DeleteCourseButton";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,11 +28,20 @@ const GalleryCourseCard = async ({ course }: Props) => {
           <span className="absolute px-2 py-1 text-white rounded-md bg-black/60 w-fit bottom-2 left-2 right-2">
             {course.name}
           </span>
+          <div className="absolute top-2 right-2">
+            <DeleteCourseButton course={course} />
+          </div>
+          <div className="absolute px-2 py-1 text-white rounded-md bg-black/60 w-fit top-2 left-2 right-2 flex items-center ">
+            <Eye className="mr-2" />
+            <span className="text-sm text-secondary-foreground/60">
+              {course.views}
+            </span>
+          </div>
         </Link>
 
         <div className="p-4">
           <h4 className="text-sm text-secondary-foreground/60">Разделы</h4>
-          <div className="space-y-1">
+          <div className="space-y-1 mt-2">
             {course.units.map((unit: any, unitIndex: any) => {
               return (
                 <Link
@@ -44,9 +54,6 @@ const GalleryCourseCard = async ({ course }: Props) => {
               );
             })}
           </div>
-        </div>
-        <div className="absolute bottom-2 right-2">
-          <DeleteCourseButton course={course} />
         </div>
       </div>
     </>

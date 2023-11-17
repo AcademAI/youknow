@@ -27,7 +27,6 @@ export async function POST(req: Request, res: Response) {
         chapter_title: string;
       }[];
     }[];
-    // doesn't go past here
     let output_units: outputUnits = await strict_output(
       "Ты - помощник, способный курировать содержание курса, придумывать соответствующие названия глав и находить подходящие видеоролики на youtube для каждой главы. В ответе верни массив, состоящий из JSON объектов глав.",
       new Array(units.length).fill(
