@@ -22,7 +22,7 @@ export async function searchYoutube(searchQuery: string) {
     return null;
   }
 
-  // Extract the first item from the returned list
+  // Extract the first item from the returned list 
   return data[0];
 }
 
