@@ -1,7 +1,7 @@
 export async function createUnitsNChapters(title: string, units: string[]) {
   //searchQuery = encodeURIComponent(searchQuery);
   const response = await fetch(
-    `http://0.0.0.0:8225/call_openai?action=createUnitsNChapters&title=${title}&units=${units}`,
+    `http://172.19.0.5:8225/call_openai?action=createUnitsNChapters&title=${title}&units=${units}`,
   );
 
   // Check if the response is ok
@@ -27,7 +27,7 @@ export async function createUnitsNChapters(title: string, units: string[]) {
 export async function createImageSearchTerm(title: string) {
   //searchQuery = encodeURIComponent(searchQuery);
   const response = await fetch(
-    `http://0.0.0.0:8225/call_openai?action=createImageSearchTerm&title=${title}`,
+    `http://172.19.0.5:8225/call_openai?action=createImageSearchTerm&title=${title}`,
   );
 
   // Check if the response is ok
@@ -53,7 +53,7 @@ export async function createImageSearchTerm(title: string) {
 export async function createYoutubeSummary(transcript: string) {
   //searchQuery = encodeURIComponent(searchQuery);
   const response = await fetch(
-    `http://0.0.0.0:8225/call_openai?action=createYoutubeSummary&transcript=${transcript}`,
+    `http://172.19.0.5:8225/call_openai?action=createYoutubeSummary&transcript=${transcript}`,
   );
 
   // Check if the response is ok

@@ -1,7 +1,7 @@
 export async function getKandinskyImage(prompt: string) {
     //searchQuery = encodeURIComponent(searchQuery);
     const response = await fetch(
-      `http://0.0.0.0:8225/call_kandinsky?action=getKandinskyImage&prompt=${prompt}`,
+      `http://172.19.0.5:8225/call_kandinsky?action=getKandinskyImage&prompt=${prompt}`,
     );
   
     // Check if the response is ok

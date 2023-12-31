@@ -4,7 +4,7 @@ export async function searchYoutube(searchQuery: string) {
   searchQuery = encodeURIComponent(searchQuery);
   console.log(searchQuery)
   const response = await fetch(
-    `http://0.0.0.0:8224/search?searchQuery=${searchQuery}&maxResults=1`
+    `http://172.19.0.6:8224/search?searchQuery=${searchQuery}&maxResults=1`
   );
 
   // Check if the response is ok
