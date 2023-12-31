@@ -1,11 +1,10 @@
 import { YoutubeTranscript } from "youtube-transcript";
-import { strict_output } from "./gpt";
 
 export async function searchYoutube(searchQuery: string) {
   searchQuery = encodeURIComponent(searchQuery);
   console.log(searchQuery)
   const response = await fetch(
-    `http://172.19.0.4:8224/search?searchQuery=${searchQuery}&maxResults=1`
+    `http://0.0.0.0:8224/search?searchQuery=${searchQuery}&maxResults=1`
   );
 
   // Check if the response is ok
@@ -42,7 +41,7 @@ export async function getTranscript(videoId: string) {
     return "";
   }
 }
-
+/*
 export async function getQuestionsFromTranscript(
   transcript: string,
   chapter_name: string
@@ -54,7 +53,8 @@ export async function getQuestionsFromTranscript(
     option2: string;
     option3: string;
   };
-  
+
+
   const questions: Question[] = await strict_output(
     "Ты - помощник, способный генерировать вопросы и ответы, длина каждого Q или A не должна превышать 15 слов. В ответе верни массив, состоящий из JSON объектов.",
     new Array(5).fill(
@@ -73,3 +73,4 @@ export async function getQuestionsFromTranscript(
   console.log({questions})
   return questions;
 }
+*/

@@ -14,7 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
-import SubscriptionAction from "./SubscriptionAction";
+//import SubscriptionAction from "./SubscriptionAction";
 
 type Props = { isPro: boolean };
 
@@ -185,7 +185,7 @@ const CreateCourseForm = ( { isPro }: Props) => {
           </Button>
         </form>
       </Form>
-      {!isPro && <SubscriptionAction />}
+      
     </div>
   );
 };

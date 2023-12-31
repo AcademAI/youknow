@@ -1,3 +1,5 @@
+// deprecated module
+
 import axios from "axios";
 export const getUnsplashImage = async (query: string) => {
   console.log(query)

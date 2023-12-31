@@ -3,8 +3,9 @@
 import { NextResponse } from "next/server";
 import { createChaptersSchema } from "@/validators/course";
 import { ZodError } from "zod";
-import { strict_output } from "@/lib/gpt";
-import { getUnsplashImage } from "@/lib/unsplash";
+import { createUnitsNChapters, createImageSearchTerm } from "@/lib/gpt";
+import { getKandinskyImage } from "@/lib/kandinsky";
+//import { getUnsplashImage } from "@/lib/unsplash";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 //import { getToken } from "next-auth/jwt";
@@ -27,28 +28,20 @@ export async function POST(req: Request, res: Response) {
         chapter_title: string;
       }[];
     }[];
-    let output_units: outputUnits = await strict_output(
-      "Ты - помощник, способный курировать содержание курса, придумывать соответствующие названия глав и находить подходящие видеоролики на youtube для каждой главы. В ответе верни массив, состоящий из JSON объектов глав.",
-      new Array(units.length).fill(
-        `Твоя задача - создать курс о ${title}. Сгенерируй главы под каждый раздел: ${units}. Затем для каждой главы сгенерируй подробный поисковый запрос в youtube, по которому можно найти познавательный образовательный видеоролик для главы.`
-      ),
-      {
-        title: "название раздела",
-        chapters:
-          "массив глав, каждая глава должна иметь youtube_search_query и ключ chapter_title в JSON-объекте",
-      }
-    );
+    
+    let output: string = await createUnitsNChapters(
+      title,
+      units
+     );
+    const output_units: outputUnits = JSON.parse(output);
     console.log(output_units)
 
-    const imageSearchTerm = await strict_output(
-      "you are an AI capable of finding the most relevant image for a course",
-      `Please provide a good image search term for the title of a course about ${title}. This search term will be fed into the unsplash API, so make sure it is a good search term that will return good results`,
-      {
-        image_search_term: "a good search term for the title of the course",
-      }
+    const imageOutput = await createImageSearchTerm(
+      title
     );
+    const imageSearchTerm = JSON.parse(imageOutput);
 
-    const course_image = await getUnsplashImage(
+    const course_image = await getKandinskyImage(
       imageSearchTerm.image_search_term
     );
 
@@ -62,6 +55,7 @@ export async function POST(req: Request, res: Response) {
     });
 
     for (const unit of output_units) {
+      console.log(unit);
       const title = unit.title;
       const prismaUnit = await prisma.unit.create({
         data: {
@@ -69,6 +63,7 @@ export async function POST(req: Request, res: Response) {
           courseId: course.id,
         },
       });
+      //console.log(unit.chapters);
       await prisma.chapter.createMany({
         data: unit.chapters.map((chapter) => {
           return {
