@@ -1,7 +1,9 @@
+const VALIDATIONS_URL = process.env.VALIDATIONS_URL as string;
+
 export async function getKandinskyImage(prompt: string) {
   //searchQuery = encodeURIComponent(searchQuery);
   const response = await fetch(
-    `http://0.0.0.0:8225/call_kandinsky?action=getKandinskyImage&prompt=${prompt}`
+    `${VALIDATIONS_URL}/call_kandinsky?action=getKandinskyImage&prompt=${prompt}`
   );
 
   // Check if the response is ok
