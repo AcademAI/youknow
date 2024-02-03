@@ -5,11 +5,8 @@ import { createChaptersSchema } from "@/validators/course";
 import { ZodError } from "zod";
 import { createUnitsNChapters, createImageSearchTerm } from "@/lib/gpt";
 import { getKandinskyImage } from "@/lib/kandinsky";
-//import { getUnsplashImage } from "@/lib/unsplash";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
-//import { getToken } from "next-auth/jwt";
-//import { checkSubscription } from "@/lib/subscription";
 
 export async function POST(req: Request, res: Response) {
   try {
@@ -28,17 +25,13 @@ export async function POST(req: Request, res: Response) {
         chapter_title: string;
       }[];
     }[];
-    
-    let output: string = await createUnitsNChapters(
-      title,
-      units
-     );
-    const output_units: outputUnits = JSON.parse(output);
-    console.log(output_units)
 
-    const imageOutput = await createImageSearchTerm(
-      title
-    );
+    let output: string = await createUnitsNChapters(title, units);
+
+    const output_units: outputUnits = JSON.parse(output);
+    console.log(output_units);
+
+    const imageOutput = await createImageSearchTerm(title);
     const imageSearchTerm = JSON.parse(imageOutput);
 
     const course_image = await getKandinskyImage(

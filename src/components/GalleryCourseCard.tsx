@@ -30,9 +30,7 @@ const GalleryCourseCard = async ({ course }: Props) => {
           </span>
           <div className="absolute px-2 py-1 text-white rounded-md bg-black/60 w-fit top-2 left-2 right-2 flex items-center ">
             <Eye className="mr-2" />
-            <span className="text-sm text-secondary-foreground/60">
-              {course.views}
-            </span>
+            <span className="text-sm text-white/60">{course.views}</span>
           </div>
         </Link>
         <div className="absolute top-2 right-2">

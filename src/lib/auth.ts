@@ -61,15 +61,15 @@ export const authOptions: NextAuthOptions = {
     }),
     YandexProvider({
       clientId: process.env.YANDEX_CLIENT_ID as string,
-      clientSecret: process.env.YANDEX_CLIENT_SECRET as string
-    })
+      clientSecret: process.env.YANDEX_CLIENT_SECRET as string,
+    }),
   ],
   theme: {
     colorScheme: "auto", // "auto" | "dark" | "light"
     brandColor: "", // Hex color code
     logo: "/logo.png", // Absolute URL to image
-    buttonText: "" // Hex color code
-    },
+    buttonText: "", // Hex color code
+  },
 };
 
 export const getAuthSession = () => {

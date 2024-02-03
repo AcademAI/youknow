@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import axios from "axios";
 
-type Props = { };
+type Props = {};
 
 const SubscriptionButton = () => {
   const [loading, setLoading] = React.useState(false);
@@ -19,9 +19,11 @@ const SubscriptionButton = () => {
     }
   };
   return (
-    <Button className="mt-4" disabled={loading} onClick={handleSubscribe}>
-
-    </Button>
+    <Button
+      className="mt-4"
+      disabled={loading}
+      onClick={handleSubscribe}
+    ></Button>
   );
 };
 

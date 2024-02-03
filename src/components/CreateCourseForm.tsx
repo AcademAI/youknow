@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "./ui/form";
+import Spinner from "./ui/spinner";
 import { z } from "zod";
 import { createChaptersSchema } from "@/validators/course";
 import { useForm } from "react-hook-form";
@@ -20,7 +21,7 @@ type Props = { isPro: boolean };
 
 type Input = z.infer<typeof createChaptersSchema>;
 
-const CreateCourseForm = ( { isPro }: Props) => {
+const CreateCourseForm = ({ isPro }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
   const { mutate: createChapters, isLoading } = useMutation({
@@ -49,10 +50,10 @@ const CreateCourseForm = ( { isPro }: Props) => {
       });
       return;
     }
-    if (data.units.every((unit) => unit === "")) {
+    if (data.units.filter((unit) => unit !== "").length < 2) {
       toast({
         title: "Ошибка",
-        description: "Укажите хотя бы один раздел курса",
+        description: "Укажите хотя бы два раздела курса",
         variant: "destructive",
       });
       return;
@@ -86,6 +87,10 @@ const CreateCourseForm = ( { isPro }: Props) => {
 
   form.watch();
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <div className="w-full">
       <Form {...form}>
@@ -98,10 +103,7 @@ const CreateCourseForm = ( { isPro }: Props) => {
                 <FormItem className="flex flex-col items-start w-full sm:items-center sm:flex-row">
                   <FormLabel className="flex-[1] text-xl">Название</FormLabel>
                   <FormControl className="flex-[6]">
-                    <Input
-                      placeholder="Введи основной предмет"
-                      {...field}
-                    />
+                    <Input placeholder="Введи основной предмет" {...field} />
                   </FormControl>
                 </FormItem>
               );
@@ -181,11 +183,10 @@ const CreateCourseForm = ( { isPro }: Props) => {
             className="w-full mt-6"
             size="lg"
           >
-            Поехали
+            {isLoading ? <Spinner /> : "Поехали"}
           </Button>
         </form>
       </Form>
-      
     </div>
   );
 };

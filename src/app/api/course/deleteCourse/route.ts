@@ -43,10 +43,12 @@ export async function POST(req: Request, res: Response) {
           },
           include: {
             courses: true,
-          }
+          },
         });
         if (courseOwner) {
-          const courseIndex = courseOwner.courses.findIndex((course) => course.id === courseId);
+          const courseIndex = courseOwner.courses.findIndex(
+            (course) => course.id === courseId
+          );
           if (courseIndex !== -1) {
             const deletedCourse = await prisma.course.delete({
               where: {
@@ -68,10 +70,10 @@ export async function POST(req: Request, res: Response) {
           }
         }
       }
-    }
-
-    else if (user && user?.role !== "admin") {
-      const courseIndex = user.courses.findIndex((course) => course.id === courseId);
+    } else if (user && user?.role !== "admin") {
+      const courseIndex = user.courses.findIndex(
+        (course) => course.id === courseId
+      );
       if (courseIndex !== -1) {
         const deletedCourse = await prisma.course.delete({
           where: {
@@ -99,4 +101,3 @@ export async function POST(req: Request, res: Response) {
     console.error(error);
   }
 }
-

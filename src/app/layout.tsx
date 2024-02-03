@@ -6,7 +6,6 @@ import Navbar from "@/components/Navbar";
 import { Provider } from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
 
-
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,7 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className={cn(lexend.className, "antialiased min-h-screen pt-16")} suppressHydrationWarning={true}>
+      <body
+        className={cn(lexend.className, "antialiased min-h-screen pt-16")}
+        suppressHydrationWarning={true}
+      >
         <Provider>
           <Navbar />
           {children}

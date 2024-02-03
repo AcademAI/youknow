@@ -4,6 +4,8 @@ import SignInButton from "./SignInButton";
 import { getAuthSession } from "@/lib/auth";
 import UserAccountNav from "./UserAccountNav";
 import { ThemeToggle } from "./ThemeToggle";
+import { Button } from "@/components/ui/button";
+import { BadgePlus } from "lucide-react";
 
 type Props = {};
 
@@ -18,16 +20,12 @@ const Navbar = async (props: Props) => {
           </p>
         </Link>
         <div className="flex items-center">
-          <Link href="/" className="mr-3">
-            Лента
-          </Link>
-          {session?.user && (
-            <>
-              <Link href="/gallery" className="mr-3">
-                Галерея
-              </Link>
-            </>
-          )}
+          <Button className="mr-3" variant="outline" size="icon">
+            <Link href="/create">
+              <BadgePlus className="h-[1.2rem] w-[1.2rem]" />
+            </Link>
+          </Button>
+
           <ThemeToggle className="mr-3" />
           <div className="flex items-center">
             {session?.user ? (
@@ -36,7 +34,6 @@ const Navbar = async (props: Props) => {
               <SignInButton />
             )}
           </div>
-
         </div>
       </div>
     </nav>

@@ -14,7 +14,10 @@ const DeleteCourseButton = ({ course }: Props) => {
   const { toast } = useToast();
   const [loading, setLoading] = React.useState(false);
 
-  const deleteCourse = (onSuccess: (data: any) => void, onError: (error: Error) => void) => {
+  const deleteCourse = (
+    onSuccess: (data: any) => void,
+    onError: (error: Error) => void
+  ) => {
     setLoading(true);
     axios
       .post("/api/course/deleteCourse", { courseId: course.id })

@@ -46,9 +46,9 @@ const CoursePage = async ({ params: { slug } }: Props) => {
   return (
     <div className="flex flex-col min-h-full">
       <div className="flex items-start w-full px-4 py-10 mx-auto gap-x-8 sm:px-6 lg:px-8">
-      <aside className="sticky hidden w-1/5 top-8 lg:block">
-        <CourseSideBar course={course} currentChapterId={chapter.id} />
-      </aside>
+        <aside className="sticky hidden w-1/5 top-8 lg:block">
+          <CourseSideBar course={course} currentChapterId={chapter.id} />
+        </aside>
         <main className="flex-1 w-3/5">
           <div className="px-8">
             <div className="flex flex-col">
@@ -109,7 +109,7 @@ const CoursePage = async ({ params: { slug } }: Props) => {
           </div>
         </main>
         <aside className="sticky hidden w-1/5 top-8 shrink-0 xl:block">
-        <QuizCards chapter={chapter} />
+          <QuizCards chapter={chapter} />
         </aside>
       </div>
     </div>

@@ -34,16 +34,38 @@ const UserAccountNav = ({ user }: Props) => {
                 {user.email}
               </p>
             )}
-             <Separator />
-            {<Link href="/settings" className="w-[200px] truncate text-sm text-secondary-foreground mt-4">Настройки</Link>}
-            {<Link href="/faq" className="w-[200px] truncate text-sm text-secondary-foreground">Частые вопросы</Link>}
+            <Separator />
+            {
+              <Link
+                href="/settings"
+                className="w-[200px] truncate text-sm text-secondary-foreground mt-4"
+              >
+                Настройки
+              </Link>
+            }
+            {
+              <Link
+                href="/gallery"
+                className="w-[200px] truncate text-sm text-secondary-foreground mt-4"
+              >
+                Галерея
+              </Link>
+            }
+            {
+              <Link
+                href="/faq"
+                className="w-[200px] truncate text-sm text-secondary-foreground"
+              >
+                Частые вопросы
+              </Link>
+            }
           </div>
         </div>
 
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => {
-            signOut({ callbackUrl: '/'});
+            signOut({ callbackUrl: "/" });
           }}
           className="text-red-600 cursor-pointer"
         >

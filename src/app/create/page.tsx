@@ -12,7 +12,7 @@ const CreatePage = async (props: Props) => {
   if (!session?.user) {
     return redirect("/gallery");
   }
-  
+
   // пока так
   const isPro = false;
   return (
@@ -23,7 +23,8 @@ const CreatePage = async (props: Props) => {
       <div className="flex p-4 mt-5 border-none bg-secondary">
         <InfoIcon className="w-12 h-12 mr-3 text-blue-400" />
         <div>
-        Введи название курса, который ты хочешь создать. Затем укажи разделы курса, в которые хочешь углубиться. Наш ИИ создаст курс под тебя.
+          Введи название курса, который ты хочешь создать. Затем укажи разделы
+          курса, в которые хочешь углубиться. Наш ИИ создаст курс под тебя.
         </div>
       </div>
 

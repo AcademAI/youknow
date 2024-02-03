@@ -1,12 +1,8 @@
 // /api/chapter/getInto
 
 import { prisma } from "@/lib/db";
-import { createYoutubeSummary } from "@/lib/gpt";
-import {
-  //getQuestionsFromTranscript,
-  getTranscript,
-  searchYoutube,
-} from "@/lib/youtube";
+import { createYoutubeSummary, getQuestionsFromTranscript } from "@/lib/gpt";
+import { getTranscript, searchYoutube } from "@/lib/youtube";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -37,18 +33,24 @@ export async function POST(req: Request, res: Response) {
     let maxLength = 500;
     transcript = transcript.split(" ").slice(0, maxLength).join(" ");
 
-    const summaryOutput = await createYoutubeSummary(
-      transcript,
-    );
+    const summaryOutput = await createYoutubeSummary(transcript);
     const summary = JSON.parse(summaryOutput);
-    console.log(summary)
 
-    /*
-    const questions = await getQuestionsFromTranscript(
+    type Question = {
+      question: string;
+      answer: string;
+      option1: string;
+      option2: string;
+      option3: string;
+    };
+
+    let output: string = await getQuestionsFromTranscript(
       transcript,
       chapter.name
     );
-    
+
+    const response = JSON.parse(output);
+    const questions: Question[] = response.questions;
 
     await prisma.question.createMany({
       data: questions.map((question) => {
@@ -66,8 +68,8 @@ export async function POST(req: Request, res: Response) {
           chapterId: chapterId,
         };
       }),
+      skipDuplicates: true,
     });
-    */
 
     await prisma.chapter.update({
       where: { id: chapterId },
