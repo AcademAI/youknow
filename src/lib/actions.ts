@@ -1,9 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-
 import { prisma } from "@/lib/db";
-import { redirect } from "next/navigation";
 
 export async function deleteCourse(courseId: string, url?: string) {
   try {
@@ -14,7 +12,7 @@ export async function deleteCourse(courseId: string, url?: string) {
     });
 
     if (course) {
-      const deletedCourse = await prisma.course.delete({
+      await prisma.course.delete({
         where: {
           id: courseId,
         },
@@ -29,19 +27,51 @@ export async function deleteCourse(courseId: string, url?: string) {
   }
 }
 
-let viewCount = 0;
 export async function incrementViewCount(courseId: string) {
   try {
-    viewCount++;
-    if (viewCount >= 5) {
-      await prisma.course.update({
-        where: { id: courseId },
-        data: { views: { increment: 5 } },
-      });
-      revalidatePath("/");
-      viewCount = 0; // reset the viewCount
-    }
+    await prisma.course.update({
+      where: { id: courseId },
+      data: { views: { increment: 1 } },
+    });
+    revalidatePath("/");
   } catch (error) {
     console.error(error);
+  }
+}
+
+export async function getCourses({
+  query,
+  page = 1,
+  limit = 8,
+}: {
+  query?: string;
+  page?: number;
+  limit?: number;
+}) {
+  try {
+    const offset = (page - 1) * limit;
+
+    const where = query ? { OR: [{ name: { contains: query } }] } : {};
+
+    const courses = await prisma.course.findMany({
+      where,
+      take: limit,
+      skip: offset,
+      include: {
+        units: {
+          include: { chapters: true },
+        },
+        user: true,
+      },
+      orderBy: {
+        id: "desc",
+      },
+    });
+
+    //const totalCount = await prisma.course.count({ where });
+
+    return { courses: JSON.parse(JSON.stringify(courses)) };
+  } catch (error) {
+    return { error };
   }
 }

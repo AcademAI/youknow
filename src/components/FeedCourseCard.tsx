@@ -1,4 +1,3 @@
-"use client";
 import { Chapter, Course, Unit, User } from "@prisma/client";
 import { Eye } from "lucide-react";
 import DeleteCourseButton from "@/components/DeleteCourseButton";
@@ -7,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 import UserAvatar from "./UserAvatar";
 import { incrementViewCount } from "@/lib/actions";
-import { Button } from "./ui/button";
+import { MotionDiv } from "./MotionDiv";
 
 type Props = {
   course: Course & {
@@ -19,10 +18,22 @@ type Props = {
   role: string | undefined;
 };
 
-const FeedCourseCard = async ({ course, user, role }: Props) => {
+const variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const FeedCourseCard = ({ course, user, role }: Props) => {
   return (
     <>
-      <div className="border rounded-lg border-secondary relative">
+      <MotionDiv
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        transition={{ delay: 0.5, ease: "easeInOut", duration: 0.3 }}
+        viewport={{ amount: 0 }}
+        className="border rounded-lg border-secondary relative"
+      >
         <Link
           href={`/course/${course.id}/0/0`}
           className="relative block "
@@ -70,7 +81,7 @@ const FeedCourseCard = async ({ course, user, role }: Props) => {
             })}
           </div>
         </div>
-      </div>
+      </MotionDiv>
     </>
   );
 };

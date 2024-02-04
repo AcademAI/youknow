@@ -6,8 +6,6 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useDebounce } from "use-debounce";
 
-type Props = {};
-
 const SearchBar = ({ search }: { search?: string }) => {
   const router = useRouter();
   const initialRender = React.useRef(true);

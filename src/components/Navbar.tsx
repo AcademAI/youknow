@@ -7,9 +7,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { BadgePlus } from "lucide-react";
 
-type Props = {};
-
-const Navbar = async (props: Props) => {
+const Navbar = async () => {
   const session = await getAuthSession();
   return (
     <nav className="fixed inset-x-0 top-0 bg-white dark:bg-gray-950 z-[10] h-fit border-b border-zinc-300 py-2">

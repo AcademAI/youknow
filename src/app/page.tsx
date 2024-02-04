@@ -1,13 +1,8 @@
-import FeedCourseCard from "@/components/FeedCourseCard";
 import { getAuthSession } from "@/lib/auth";
 import React from "react";
-import { getCourses } from "@/lib/getCourses";
 import SearchBar from "@/components/SearchBar";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import Link from "next/link";
-import clsx from "clsx";
-
-type Props = {};
+import LoadMore from "@/components/LoadMore";
+import { getCourses } from "@/lib/actions";
 
 const FeedPage = async ({
   searchParams,
@@ -15,19 +10,10 @@ const FeedPage = async ({
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
   const session = await getAuthSession();
-  const page =
-    typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
-  const limit =
-    typeof searchParams.limit === "string" ? Number(searchParams.limit) : 12;
   const search =
     typeof searchParams.search === "string" ? searchParams.search : undefined;
-  const { courses, totalCount } = await getCourses({
-    page,
-    limit,
-    query: search,
-  });
-  const totalPages = Math.ceil(totalCount! / limit);
 
+  const courses = await getCourses({ query: search });
   return (
     <section className="py-8 mx-auto max-w-7xl">
       <div className="mb-12 flex flex-col sm:flex-row items-center justify-between gap-x-16">
@@ -35,54 +21,17 @@ const FeedPage = async ({
           Лента курсов
         </h1>
         <div className="flex space-x-6 pt-4">
-          <Link
-            href={{
-              pathname: "/",
-              query: {
-                ...(search ? { search } : {}),
-                page: page > 1 ? page - 1 : 1,
-              },
-            }}
-            className={clsx(
-              "rounded border flex self-center bg-gray-100 px-3 py-1 text-sm text-gray-800",
-              page <= 1 && "hidden"
-            )}
-          >
-            <ArrowLeft />
-          </Link>
           <div className="flex">
             <SearchBar search={search} />
           </div>
-          <Link
-            href={{
-              pathname: "/",
-              query: {
-                ...(search ? { search } : {}),
-                page: page + 1,
-              },
-            }}
-            className={clsx(
-              "rounded border flex self-center bg-gray-100 px-3 py-1 text-sm text-gray-800",
-              page >= totalPages && "hidden"
-            )}
-          >
-            <ArrowRight />
-          </Link>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0 mt-8">
-        {courses?.map((course: any) => {
-          return (
-            <FeedCourseCard
-              course={course}
-              user={course.user}
-              role={session?.user.role}
-              key={course.id}
-            />
-          );
-        })}
-      </div>
+      <LoadMore
+        key={Math.random()}
+        session={session?.user?.role || ""}
+        query={search}
+        initialCourses={courses.courses}
+      />
     </section>
   );
 };
