@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import UserAvatar from "./UserAvatar";
+import { incrementViewCount } from "@/lib/actions";
+import { Button } from "./ui/button";
 
 type Props = {
   course: Course & {
@@ -18,20 +20,13 @@ type Props = {
 };
 
 const FeedCourseCard = async ({ course, user, role }: Props) => {
-  const incrementViewCount = async () => {
-    await fetch(`/api/course/incrementViewCount`, {
-      method: "POST",
-      body: JSON.stringify({ courseId: course.id }),
-    });
-  };
-
   return (
     <>
       <div className="border rounded-lg border-secondary relative">
         <Link
           href={`/course/${course.id}/0/0`}
           className="relative block "
-          onClick={incrementViewCount}
+          onClick={() => incrementViewCount(course.id)}
         >
           <Image
             src={course.image || ""}

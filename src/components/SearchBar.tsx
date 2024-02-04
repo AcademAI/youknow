@@ -28,12 +28,12 @@ const SearchBar = ({ search }: { search?: string }) => {
   }, [query]);
 
   return (
-    <section className="pt-4 flex items-center space-x-2 sm:space-x-4">
+    <section className="flex items-center space-x-2 sm:space-x-4">
       <Input
         value={text}
         onChange={(event) => setText(event.target.value)}
         type="text"
-        className="px-3 py-2 w-full sm:w-80"
+        className="text-center w-full sm:w-80"
         placeholder="Введите запрос"
       />
     </section>

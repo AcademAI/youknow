@@ -34,7 +34,7 @@ const GalleryCourseCard = async ({ course }: Props) => {
           </div>
         </Link>
         <div className="absolute top-2 right-2">
-          <DeleteCourseButton course={course} />
+          <DeleteCourseButton course={course} url={`gallery`} />
         </div>
 
         <div className="p-4">

@@ -34,7 +34,7 @@ const FeedPage = async ({
         <h1 className="self-center text-3xl font-bold text-center sm:text-6xl">
           Лента курсов
         </h1>
-        <div className="flex space-x-6">
+        <div className="flex space-x-6 pt-4">
           <Link
             href={{
               pathname: "/",
@@ -44,13 +44,13 @@ const FeedPage = async ({
               },
             }}
             className={clsx(
-              "rounded border flex items-center bg-gray-100 px-3 py-1 text-sm text-gray-800",
-              page <= 1 && "pointer-events-none opacity-50"
+              "rounded border flex self-center bg-gray-100 px-3 py-1 text-sm text-gray-800",
+              page <= 1 && "hidden"
             )}
           >
             <ArrowLeft />
           </Link>
-          <div className="self-center">
+          <div className="flex">
             <SearchBar search={search} />
           </div>
           <Link
@@ -62,8 +62,8 @@ const FeedPage = async ({
               },
             }}
             className={clsx(
-              "rounded border flex items-center bg-gray-100 px-3 py-1 text-sm text-gray-800",
-              page >= totalPages && "pointer-events-none opacity-50"
+              "rounded border flex self-center bg-gray-100 px-3 py-1 text-sm text-gray-800",
+              page >= totalPages && "hidden"
             )}
           >
             <ArrowRight />
