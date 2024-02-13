@@ -19,12 +19,13 @@ const Navbar = async () => {
         </Link>
         <div className="flex flex-1 justify-end">
           <div className="flex items-center">
-            <Button className="mr-3" variant="outline" size="icon">
-              <Link href="/create">
-                <BadgePlus className="h-[1.2rem] w-[1.2rem]" />
-              </Link>
-            </Button>
-
+            {session?.user && (
+              <Button className="mr-3" variant="outline" size="icon">
+                <Link href="/create">
+                  <BadgePlus className="h-[1.2rem] w-[1.2rem]" />
+                </Link>
+              </Button>
+            )}
             <ThemeToggle className="mr-3" />
             <div className="flex items-center">
               {session?.user ? (
