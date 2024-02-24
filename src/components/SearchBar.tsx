@@ -19,9 +19,9 @@ const SearchBar = ({ search }: { search?: string }) => {
     }
 
     if (!query) {
-      router.push(`/`);
+      router.push(`/feed`);
     } else {
-      router.push(`/?search=${query}`);
+      router.push(`/feed?search=${query}`);
     }
   }, [query]);
 
