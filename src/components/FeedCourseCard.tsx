@@ -24,6 +24,12 @@ const variants = {
 };
 
 const FeedCourseCard = ({ course, user, role }: Props) => {
+  const handleClick = async () => {
+    if (role) {
+      await incrementViewCount(course.id);
+    }
+  };
+
   return (
     <>
       <MotionDiv
@@ -35,9 +41,9 @@ const FeedCourseCard = ({ course, user, role }: Props) => {
         className="border rounded-lg border-secondary relative"
       >
         <Link
-          href={`/course/${course.id}/0/0`}
-          className="relative block "
-          onClick={() => incrementViewCount(course.id)}
+          href={role ? `/course/${course.id}/0/0` : ""}
+          className="relative block"
+          onClick={role ? handleClick : undefined}
         >
           <Image
             src={course.image || ""}
@@ -71,9 +77,10 @@ const FeedCourseCard = ({ course, user, role }: Props) => {
             {course.units.map((unit: any, unitIndex: any) => {
               return (
                 <Link
-                  href={`/course/${course.id}/${unitIndex}/0`}
+                  href={role ? `/course/${course.id}/${unitIndex}/0` : ""}
                   key={unit.id}
                   className="block underline w-fit"
+                  onClick={role ? handleClick : undefined}
                 >
                   {unit.name}
                 </Link>

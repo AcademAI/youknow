@@ -20,6 +20,7 @@ RUN \
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /root/.npm /root/.npm
 COPY . .
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -37,8 +38,9 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
+ENV NEXT_SHARP_PATH=/app/node_modules/sharp
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

@@ -13,7 +13,7 @@ type Props = {
   };
 };
 
-const GalleryCourseCard = ({ course }: Props) => {
+const GalleryCourseCard = async ({ course }: Props) => {
   return (
     <>
       <div className="border rounded-lg border-secondary relative">
