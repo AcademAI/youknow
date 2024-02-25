@@ -11,7 +11,7 @@ import { Metrika } from "@/components/YandexMetrica";
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "YouKnow | AcademAI",
+  title: "Генератор онлайн-курсов с GPT YouKnow",
 };
 
 export default function RootLayout({
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body
-        className={cn(lexend.className, "antialiased min-h-screen pt-16")}
+        className={cn(lexend.className, "antialiased min-h-screen")}
         suppressHydrationWarning={true}
       >
         <Provider>

@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { BadgePlus } from "lucide-react";
 import Link from "next/link";
 
-const HeroSignIn = () => {
+const HeroSignInButton = () => {
   return (
     <Button
       type="button"
@@ -22,4 +22,4 @@ const HeroSignIn = () => {
   );
 };
 
-export default HeroSignIn;
+export default HeroSignInButton;

@@ -10,13 +10,15 @@ import { BadgePlus } from "lucide-react";
 const Navbar = async () => {
   const session = await getAuthSession();
   return (
-    <nav className="fixed inset-x-0 top-0 z-[10] h-fit backdrop-blur-md py-2">
+    <nav className="sticky w-full inset-x-0 top-0 z-[10] h-fit backdrop-blur-md py-2">
       <div className="flex items-center justify-center h-full gap-2 px-8 mx-auto sm:justify-between max-w-7xl">
-        <Link href="/" className="items-center gap-2 sm:flex">
-          <p className="rounded-lg border-2 border-b-4 border-r-4 border-black px-2 py-1 text-xl font-bold transition-all hover:-translate-y-[2px] md:block dark:border-white">
-            YouKnow
-          </p>
-        </Link>
+        <div className="justify-start flex-wrap gap-x-4 gap-y-1">
+          <Link href="/" className="items-center gap-2 sm:flex">
+            <p className="rounded-lg border-2 border-b-4 border-r-4 border-black px-2 py-1 text-xl bg-white dark:bg-background font-bold transition-all hover:-translate-y-[2px] md:block dark:border-white">
+              YouKnow
+            </p>
+          </Link>
+        </div>
         <div className="flex flex-1 justify-end">
           <div className="flex items-center">
             {session?.user && (
