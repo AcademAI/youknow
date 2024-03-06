@@ -34,6 +34,10 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
+  other: {
+    "yandex-verification": "6c448d754d926e3e",
+    "google-site-verification": "3JaVOxAgflJ0Qty-7XJwAz7TYYQqDuK21-YB6LwdVaU",
+  },
 
   title: "YouKnow by AcademAI - Web3 платформа для генерации онлайн курсов",
   description:

@@ -13,17 +13,6 @@ type Props = {};
 const MainPage = async (props: Props) => {
   const session = await getAuthSession();
 
-  const courses = await prisma.course.findMany({
-    take: 4,
-    include: {
-      units: {
-        include: { chapters: true },
-      },
-    },
-    orderBy: {
-      id: "desc",
-    },
-  });
   return (
     <main>
       <section className="py-8 overflow-hidden">
