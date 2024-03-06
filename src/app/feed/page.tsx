@@ -3,12 +3,13 @@ import React from "react";
 import SearchBar from "@/components/SearchBar";
 import LoadMore from "@/components/LoadMore";
 import { getCourses } from "@/lib/actions";
+import type { Metadata, ResolvingMetadata } from "next";
 
-const FeedPage = async ({
-  searchParams,
-}: {
+type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
-}) => {
+};
+
+const FeedPage = async ({ searchParams }: Props) => {
   const session = await getAuthSession();
   const search =
     typeof searchParams.search === "string" ? searchParams.search : undefined;
@@ -35,5 +36,18 @@ const FeedPage = async ({
     </section>
   );
 };
+
+export async function generateMetadata(
+  { searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const dynamicTitle = `Лента курсов: ${
+    searchParams.search || "Все курсы"
+  } | YouKnow`;
+
+  return {
+    title: dynamicTitle,
+  };
+}
 
 export default FeedPage;

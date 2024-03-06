@@ -3,6 +3,7 @@ import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import React from "react";
+import type { Metadata } from "next";
 
 type Props = {};
 
@@ -36,5 +37,13 @@ const GalleryPage = async (props: Props) => {
     </div>
   );
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const dynamicTitle = "Мои курсы";
+
+  return {
+    title: dynamicTitle,
+  };
+}
 
 export default GalleryPage;

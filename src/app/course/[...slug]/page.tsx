@@ -8,6 +8,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 
+import type { Metadata } from "next";
+
 type Props = {
   params: {
     slug: string[];
@@ -120,5 +122,46 @@ const CoursePage = async ({ params: { slug } }: Props) => {
     </div>
   );
 };
+export async function generateMetadata({
+  params: { slug },
+}: Props): Promise<Metadata> {
+  const [courseId, unitIndexParam, chapterIndexParam] = slug;
+  const course = await prisma.course.findUnique({
+    where: { id: courseId },
+    include: {
+      units: {
+        include: {
+          chapters: {
+            include: { questions: true },
+          },
+        },
+      },
+    },
+  });
+
+  if (!course) {
+    // Handle the case where the course is not found
+    return {
+      title: "Курс не найден",
+      description: "Запрошенный курс не был найден.",
+    };
+  }
+
+  let unitIndex = parseInt(unitIndexParam);
+  let chapterIndex = parseInt(chapterIndexParam);
+
+  const unit = course.units[unitIndex];
+  const chapter = unit.chapters[chapterIndex];
+
+  // Construct the metadata
+  const title = `${chapter.name} - ${course.name} | YouKnow`;
+  const description = `${chapter.summary}`;
+
+  return {
+    title,
+    description,
+    // Add other metadata fields as needed
+  };
+}
 
 export default CoursePage;

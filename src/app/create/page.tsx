@@ -4,6 +4,13 @@ import { redirect } from "next/navigation";
 import { InfoIcon } from "lucide-react";
 import CreateCourseForm from "@/components/CreateCourseForm";
 //import { checkSubscription } from "@/lib/subscription";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Создать курс | YouKnow",
+  description:
+    "Страница создания курса. Введи название курса, который ты хочешь создать. Затем укажи разделы курса, в которые хочешь углубиться. Наш ИИ создаст курс под тебя.",
+};
 
 type Props = {};
 

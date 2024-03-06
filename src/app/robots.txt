@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://youknow.academai.ru/sitemap.xml

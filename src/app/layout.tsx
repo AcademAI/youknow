@@ -11,7 +11,33 @@ import { Metrika } from "@/components/YandexMetrica";
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Генератор онлайн-курсов с GPT YouKnow",
+  generator: "Next.js",
+  applicationName: "YouKnow",
+  referrer: "origin-when-cross-origin",
+  keywords: [
+    "Онлайн курс",
+    "Образование",
+    "Обучение",
+    "ИИ",
+    "LLM",
+    "Web3",
+    "Online course",
+    "Education",
+    "AI",
+    "БЯМ",
+  ],
+  authors: [{ name: "Artur", url: "https://arturyasenovets.vercel.app" }],
+  creator: "Artur",
+  publisher: "Artur",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+
+  title: "YouKnow by AcademAI - Web3 платформа для генерации онлайн курсов",
+  description:
+    "YouKnow от команды AcademAI предоставляет новый подход к онлайн образованию. Генерируйте адаптивные онлайн-курсы с помощью ИИ всего за 2 минуты, пройдите свой учебный трек или разместите его в открытый доступ.",
 };
 
 export default function RootLayout({
