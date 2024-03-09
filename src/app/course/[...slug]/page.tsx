@@ -1,6 +1,8 @@
 import CourseSideBar from "@/components/CourseSideBar";
-import MainVideoSummary from "@/components/MainVideoSummary";
+import MainVideo from "@/components/MainVideo";
+import VideoSummary from "@/components/VideoSummary";
 import QuizCards from "@/components/QuizCards";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -18,9 +20,7 @@ type Props = {
 
 const CoursePage = async ({ params: { slug } }: Props) => {
   const session = await getAuthSession();
-  if (!session?.user) {
-    redirect("/");
-  }
+
   const [courseId, unitIndexParam, chapterIndexParam] = slug;
   const course = await prisma.course.findUnique({
     where: { id: courseId },
@@ -59,20 +59,45 @@ const CoursePage = async ({ params: { slug } }: Props) => {
         <main className="flex-1 w-3/5">
           <div className="px-8">
             <div className="flex flex-col">
-              <MainVideoSummary
+              <MainVideo
                 chapter={chapter}
                 chapterIndex={chapterIndex}
                 unit={unit}
                 unitIndex={unitIndex}
               />
-              <div className="block xl:hidden">
-                <QuizCards chapter={chapter} />
+              {/* Tabs for VideoSummary, QuizCards and CourseSideBar on mobile */}
+              <div className="block xl:hidden mt-5">
+                <Tabs defaultValue="videoSummary" className="w-full">
+                  <TabsList>
+                    <TabsTrigger value="videoSummary">Сводка</TabsTrigger>
+                    <TabsTrigger value="quizCards">Тест</TabsTrigger>
+                    <TabsTrigger value="courseSideBar">Структура</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="videoSummary">
+                    <VideoSummary chapterSummary={chapter?.summary || ""} />
+                  </TabsContent>
+                  <TabsContent value="quizCards">
+                    <QuizCards
+                      chapter={chapter}
+                      role={session?.user?.role || ""}
+                    />
+                  </TabsContent>
+                  <TabsContent value="courseSideBar">
+                    <CourseSideBar
+                      course={course}
+                      currentChapterId={chapter.id}
+                    />
+                  </TabsContent>
+                </Tabs>
               </div>
-              <div className="block mt-4 lg:hidden">
-                <CourseSideBar course={course} currentChapterId={chapter.id} />
+
+              {/* Shown on larger screens */}
+
+              <div className="hidden lg:block">
+                <VideoSummary chapterSummary={chapter?.summary || ""} />
               </div>
             </div>
-
+            {/* Navigation links */}
             <div className="flex-[1] h-[1px] mt-4 text-gray-500 bg-gray-500" />
             <div className="flex pb-8">
               {prevChapter && (
@@ -93,7 +118,6 @@ const CoursePage = async ({ params: { slug } }: Props) => {
                   </div>
                 </Link>
               )}
-
               {nextChapter && (
                 <Link
                   href={`/course/${course.id}/${unitIndex}/${chapterIndex + 1}`}
@@ -115,8 +139,9 @@ const CoursePage = async ({ params: { slug } }: Props) => {
             </div>
           </div>
         </main>
+        {/* QuizCards for larger screens */}
         <aside className="sticky hidden w-1/5 top-8 shrink-0 xl:block">
-          <QuizCards chapter={chapter} />
+          <QuizCards chapter={chapter} role={session?.user?.role || ""} />
         </aside>
       </div>
     </div>
@@ -140,7 +165,6 @@ export async function generateMetadata({
   });
 
   if (!course) {
-    // Handle the case where the course is not found
     return {
       title: "Курс не найден",
       description: "Запрошенный курс не был найден.",
@@ -153,14 +177,12 @@ export async function generateMetadata({
   const unit = course.units[unitIndex];
   const chapter = unit.chapters[chapterIndex];
 
-  // Construct the metadata
   const title = `${chapter.name} - ${course.name} | YouKnow`;
   const description = `${chapter.summary}`;
 
   return {
     title,
     description,
-    // Add other metadata fields as needed
   };
 }
 

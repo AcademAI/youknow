@@ -41,7 +41,7 @@ const FeedCourseCard = ({ course, user, role }: Props) => {
         className="border rounded-lg border-secondary relative"
       >
         <Link
-          href={role ? `/course/${course.id}/0/0` : ""}
+          href={`/course/${course.id}/0/0`}
           className="relative block"
           onClick={role ? handleClick : undefined}
         >
@@ -77,7 +77,7 @@ const FeedCourseCard = ({ course, user, role }: Props) => {
             {course.units.map((unit: any, unitIndex: any) => {
               return (
                 <Link
-                  href={role ? `/course/${course.id}/${unitIndex}/0` : ""}
+                  href={`/course/${course.id}/${unitIndex}/0`}
                   key={unit.id}
                   className="block underline w-fit"
                   onClick={role ? handleClick : undefined}

@@ -8,12 +8,7 @@ type Props = {
   chapterIndex: number;
 };
 
-const MainVideoSummary = ({
-  unit,
-  unitIndex,
-  chapter,
-  chapterIndex,
-}: Props) => {
+const MainVideo = ({ unit, unitIndex, chapter, chapterIndex }: Props) => {
   return (
     <div className="flex-[2] mt-5">
       <h4 className="text-sm uppercase text-secondary-foreground/60">
@@ -26,12 +21,8 @@ const MainVideoSummary = ({
         src={`https://www.youtube.com/embed/${chapter.videoId}`}
         allowFullScreen
       />
-      <div className="mt-4">
-        <h3 className="text-3xl font-semibold">Сводка</h3>
-        <p className="mt-2 text-secondary-foreground/80">{chapter.summary}</p>
-      </div>
     </div>
   );
 };
 
-export default MainVideoSummary;
+export default MainVideo;
