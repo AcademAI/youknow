@@ -13,7 +13,6 @@ const lexend = Lexend({ subsets: ["latin"] });
 export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "YouKnow",
-  referrer: "origin-when-cross-origin",
   keywords: [
     "Онлайн курс",
     "Образование",
