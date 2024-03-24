@@ -1,4 +1,5 @@
 // app/components/metrika.js
+
 "use client";
 
 import { useEffect } from "react";
