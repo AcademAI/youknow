@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     "google-site-verification": "3JaVOxAgflJ0Qty-7XJwAz7TYYQqDuK21-YB6LwdVaU",
   },
 
-  title: "YouKnow by AcademAI - Web3 платформа для генерации онлайн курсов",
+  title: "YouKnow - платформа для генерации онлайн курсов",
   description:
     "YouKnow от команды AcademAI предоставляет новый подход к онлайн образованию. Генерируйте адаптивные онлайн-курсы с помощью ИИ всего за 2 минуты, пройдите свой учебный трек или разместите его в открытый доступ.",
 };
