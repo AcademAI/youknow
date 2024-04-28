@@ -10,7 +10,7 @@
     "build": "npx prisma generate && next build",
     "start": "next start",
     "start:prod": "node .next/standalone/server.js",
-    "start:migrate:prod": "prisma migrate deploy && npm run start:prod",
+    "start:migrate:prod": "npx prisma migrate deploy && npm run start:prod",
     "lint": "next lint"
   },
   "dependencies": {
