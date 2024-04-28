@@ -19,7 +19,3 @@ jobs:
           private_key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           commands: cd /root/youknow; git reset --hard; git checkout main; git pull origin main; docker stop youknow; docker rm youknow; docker rmi youknow_nextjs; docker build -t youknow_nextjs .; docker run --detach --network tunnel --name youknow youknow_nextjs; docker image prune -a -f
-      - name: Apply all pending migrations to the database
-        run: npx prisma migrate deploy
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
