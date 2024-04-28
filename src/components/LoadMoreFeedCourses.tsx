@@ -3,22 +3,16 @@
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { getCourses } from "@/lib/actions";
+import { getCoursesFeed } from "@/lib/actions";
 import FeedCourseCard from "./FeedCourseCard";
-import { Chapter, Course, Unit } from "@prisma/client";
+import { CourseWithUnits } from "@/types/types";
 
-type CourseWithUnits = Course & {
-  units: (Unit & {
-    chapters: Chapter[];
-  })[];
-};
-
-const LoadMore = ({
+const LoadMoreFeedCourses = ({
   session,
   query,
   initialCourses,
 }: {
-  session?: string;
+  session?: any;
   query?: string;
   initialCourses?: CourseWithUnits[];
 }) => {
@@ -31,7 +25,7 @@ const LoadMore = ({
     async function fetchData() {
       if (inView) {
         const next = page + 1;
-        await getCourses({ page: next, query }).then((res) => {
+        await getCoursesFeed({ page: next, query }).then((res) => {
           if (res.courses.length === 0) {
             setNoMoreData(true);
           } else {
@@ -49,13 +43,13 @@ const LoadMore = ({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0 mt-8">
+      <div className="grid grid-cols-1 gap-4 px-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:px-0">
         {courses?.map((course: any) => {
           return (
             <FeedCourseCard
               course={course}
-              user={course.user}
-              role={session}
+              user={course.author}
+              session={session}
               key={course.id}
             />
           );
@@ -72,4 +66,4 @@ const LoadMore = ({
   );
 };
 
-export default LoadMore;
+export default LoadMoreFeedCourses;

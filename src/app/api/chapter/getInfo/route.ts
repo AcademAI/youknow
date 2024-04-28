@@ -5,13 +5,21 @@ import { createYoutubeSummary, getQuestionsFromTranscript } from "@/lib/gpt";
 import { getTranscript, searchYoutube } from "@/lib/youtube";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { getAuthSession } from "@/lib/auth";
 
 const bodyParser = z.object({
   chapterId: z.string(),
 });
-
+interface YoutubeSearchResult {
+  videoId?: string;
+  videoLength?: string;
+}
 export async function POST(req: Request, res: Response) {
   try {
+    const session = await getAuthSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: "unauthorised" }, { status: 401 });
+    }
     const body = await req.json();
     const { chapterId } = bodyParser.parse(body);
     const chapter = await prisma.chapter.findUnique({
@@ -28,7 +36,17 @@ export async function POST(req: Request, res: Response) {
         { status: 404 }
       );
     }
-    const videoId = await searchYoutube(chapter.youtubeSearchQuery);
+
+    const result = (await searchYoutube(
+      chapter.youtubeSearchQuery
+    )) as YoutubeSearchResult;
+
+    let { videoId = "", videoLength = "" } = result;
+    let videoLengthInt = parseInt(videoLength, 10);
+    if (isNaN(videoLengthInt)) {
+      videoLengthInt = 0;
+    }
+
     let transcript = await getTranscript(videoId);
     let maxLength = 500;
     transcript = transcript.split(" ").slice(0, maxLength).join(" ");
@@ -76,6 +94,7 @@ export async function POST(req: Request, res: Response) {
       data: {
         videoId: videoId,
         summary: summary.summary,
+        duration: videoLengthInt,
       },
     });
 

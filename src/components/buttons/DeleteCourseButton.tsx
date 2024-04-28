@@ -2,7 +2,7 @@
 import React from "react";
 import { useTransition } from "react";
 import { deleteCourse } from "@/lib/actions";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Course } from "@prisma/client";
 import { Trash } from "lucide-react";
 

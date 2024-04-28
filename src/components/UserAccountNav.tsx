@@ -37,18 +37,10 @@ const UserAccountNav = ({ user }: Props) => {
             <Separator />
             {
               <Link
-                href="/settings"
+                href={`/user/${user.id}`}
                 className="w-[200px] truncate text-sm text-secondary-foreground mt-4"
               >
-                Настройки
-              </Link>
-            }
-            {
-              <Link
-                href="/gallery"
-                className="w-[200px] truncate text-sm text-secondary-foreground mt-4"
-              >
-                Галерея
+                Мой профиль
               </Link>
             }
             {

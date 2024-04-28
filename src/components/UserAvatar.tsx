@@ -21,9 +21,9 @@ const UserAvatar = ({ user }: Props) => {
           />
         </div>
       ) : (
-        <AvatarFallback>
-          <span className="sr-only">{user?.name}</span>
-        </AvatarFallback>
+        <div className="w-12 h-12 bg-gray-200 rounded-full ">
+          <p className="text-gray-500 text-xs">No Image</p>
+        </div>
       )}
     </Avatar>
   );

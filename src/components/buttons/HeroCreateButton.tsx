@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 import { BadgePlus } from "lucide-react";
 import Link from "next/link";
@@ -17,9 +17,7 @@ const HeroCreateButton = () => {
       }}
     >
       Создать курс
-      <Link className="ml-2" href="/create">
-        <BadgePlus className="animate-ping h-[1.2rem] w-[1.2rem]" />
-      </Link>
+      <BadgePlus className="animate-ping h-[1.2rem] w-[1.2rem]" />
     </Button>
   );
 };

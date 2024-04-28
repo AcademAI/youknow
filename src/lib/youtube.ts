@@ -24,21 +24,22 @@ export async function searchYoutube(searchQuery: string) {
   }
 
   // Extract the first item from the returned list
-  return data[0];
+  const { videoId, videoLength } = data[0];
+  return { videoId, videoLength };
 }
 
 export async function getTranscript(videoId: string) {
   try {
-    let transcript_arr = await YoutubeTranscript.fetchTranscript(videoId, {
-      lang: "ru",
-      country: "RU",
-    });
+    let transcript_arr = await YoutubeTranscript.fetchTranscript(
+      `https://www.youtube.com/watch?v=${videoId}`
+    );
     let transcript = "";
     for (let t of transcript_arr) {
       transcript += t.text + " ";
     }
     return transcript.replaceAll("\n", "");
   } catch (error) {
+    console.log(error);
     return "";
   }
 }

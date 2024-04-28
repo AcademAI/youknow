@@ -9,9 +9,10 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import { courseTotalDuration } from "@/lib/actions";
 
 import type { Metadata } from "next";
-
+import Chat from "@/components/ChatComponent";
 type Props = {
   params: {
     slug: string[];
@@ -35,18 +36,22 @@ const CoursePage = async ({ params: { slug } }: Props) => {
     },
   });
   if (!course) {
-    return redirect("/gallery");
+    return redirect("/feed");
   }
+  if (!course.totalDuration) {
+    await courseTotalDuration(course);
+  }
+
   let unitIndex = parseInt(unitIndexParam);
   let chapterIndex = parseInt(chapterIndexParam);
 
   const unit = course.units[unitIndex];
   if (!unit) {
-    return redirect("/gallery");
+    return redirect("/feed");
   }
   const chapter = unit.chapters[chapterIndex];
   if (!chapter) {
-    return redirect("/gallery");
+    return redirect("/feed");
   }
   const nextChapter = unit.chapters[chapterIndex + 1];
   const prevChapter = unit.chapters[chapterIndex - 1];
@@ -60,6 +65,7 @@ const CoursePage = async ({ params: { slug } }: Props) => {
           <div className="px-8">
             <div className="flex flex-col">
               <MainVideo
+                userId={session?.user?.id || ""}
                 chapter={chapter}
                 chapterIndex={chapterIndex}
                 unit={unit}
@@ -68,19 +74,26 @@ const CoursePage = async ({ params: { slug } }: Props) => {
               {/* Tabs for VideoSummary, QuizCards and CourseSideBar on mobile */}
               <div className="block xl:hidden mt-5">
                 <Tabs defaultValue="videoSummary" className="w-full">
-                  <TabsList>
+                  <TabsList className="">
                     <TabsTrigger value="videoSummary">Сводка</TabsTrigger>
                     <TabsTrigger value="quizCards">Тест</TabsTrigger>
-                    <TabsTrigger value="courseSideBar">Структура</TabsTrigger>
+                    <TabsTrigger value="chatAi">Чат с ИИ</TabsTrigger>
+                    <TabsTrigger value="courseSideBar">План</TabsTrigger>
                   </TabsList>
                   <TabsContent value="videoSummary">
                     <VideoSummary chapterSummary={chapter?.summary || ""} />
                   </TabsContent>
                   <TabsContent value="quizCards">
-                    <QuizCards
-                      chapter={chapter}
-                      role={session?.user?.role || ""}
-                    />
+                    <QuizCards chapter={chapter} session={session || ""} />
+                  </TabsContent>
+                  <TabsContent value="chatAi">
+                    {session?.user ? (
+                      <Chat chapter={chapter} session={session} />
+                    ) : (
+                      <h1 className="text-lg font-semibold text-red-500">
+                        Войдите в аккаунт, чтобы задать вопрос ИИ
+                      </h1>
+                    )}
                   </TabsContent>
                   <TabsContent value="courseSideBar">
                     <CourseSideBar
@@ -92,10 +105,27 @@ const CoursePage = async ({ params: { slug } }: Props) => {
               </div>
 
               {/* Shown on larger screens */}
-
-              <div className="hidden lg:block">
-                <VideoSummary chapterSummary={chapter?.summary || ""} />
-              </div>
+              <Tabs
+                defaultValue="videoSummary"
+                className="w-full hidden xl:block mt-4"
+              >
+                <TabsList>
+                  <TabsTrigger value="videoSummary">Сводка</TabsTrigger>
+                  <TabsTrigger value="chatAi">Чат с ИИ</TabsTrigger>
+                </TabsList>
+                <TabsContent value="videoSummary">
+                  <VideoSummary chapterSummary={chapter?.summary || ""} />
+                </TabsContent>
+                <TabsContent value="chatAi">
+                  {session?.user ? (
+                    <Chat chapter={chapter} session={session} />
+                  ) : (
+                    <h1 className="text-lg font-semibold text-red-500">
+                      Войдите в аккаунт, чтобы задать вопрос ИИ
+                    </h1>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
             {/* Navigation links */}
             <div className="flex-[1] h-[1px] mt-4 text-gray-500 bg-gray-500" />
@@ -141,7 +171,7 @@ const CoursePage = async ({ params: { slug } }: Props) => {
         </main>
         {/* QuizCards for larger screens */}
         <aside className="sticky hidden w-1/5 top-8 shrink-0 xl:block">
-          <QuizCards chapter={chapter} role={session?.user?.role || ""} />
+          <QuizCards chapter={chapter} session={session || ""} />
         </aside>
       </div>
     </div>

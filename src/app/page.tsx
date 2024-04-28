@@ -1,17 +1,20 @@
 import { getAuthSession } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import React from "react";
-import HeroSignInButton from "@/components/HeroSignInButton";
-import HeroFeedButton from "@/components/HeroFeedButton";
-import HeroCreateButton from "@/components/HeroCreateButton";
+import HeroSignInButton from "@/components/buttons/HeroSignInButton";
+import HeroFeedButton from "@/components/buttons/HeroFeedButton";
+import HeroCreateButton from "@/components/buttons/HeroCreateButton";
 import Image from "next/image";
 import Footer from "@/components/Footer";
 import type { Metadata } from "next";
+import { getAllUsersLength, getAllCoursesLength } from "@/lib/actions";
 
 type Props = {};
 
 const MainPage = async (props: Props) => {
   const session = await getAuthSession();
+  const courses = await getAllCoursesLength();
+  const users = await getAllUsersLength();
 
   return (
     <main>
@@ -92,6 +95,16 @@ const MainPage = async (props: Props) => {
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="flex flex-row sm:justify-start justify-center gap-8 ">
+              <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-red-500 to-blue-500 flex flex-row gap-1">
+                Курсов создано:
+                <p className="text-primary">{courses?.totalCount || 0}</p>
+              </div>
+              <div className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-red-500 to-blue-500 flex flex-row gap-1">
+                Пользователей:
+                <p className="text-primary">{users?.totalCount || 0}</p>
               </div>
             </div>
           </div>

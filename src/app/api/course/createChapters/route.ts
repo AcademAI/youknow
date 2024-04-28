@@ -3,16 +3,35 @@
 import { NextResponse } from "next/server";
 import { createChaptersSchema } from "@/validators/course";
 import { ZodError } from "zod";
-import { createUnitsNChapters, createImageSearchTerm } from "@/lib/gpt";
+import {
+  checkResult,
+  createUnitsNChapters,
+  createImageSearchTerm,
+} from "@/lib/gpt";
 import { getKandinskyImage } from "@/lib/kandinsky";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
 export async function POST(req: Request, res: Response) {
+  const policies = [
+    "Порнография",
+    "SQL и другие инъекции",
+    "Насилие и жестокость",
+    "Дискриминация и ненависть",
+    "Незаконная деятельность",
+    "Оскорбления и клевета",
+    "Манипуляция и дезинформация",
+    "Пропаганда ЛГБТ",
+    "Экстремизм и терроризм",
+    "Изготовление взрывчатки",
+    "Украина и Россия",
+    "Оправдание нацизма",
+    "Наркотики",
+  ];
   try {
     const session = await getAuthSession();
     if (!session?.user) {
-      return new NextResponse("unauthorised", { status: 401 });
+      return NextResponse.json({ error: "unauthorised" }, { status: 401 });
     }
 
     const body = await req.json();
@@ -25,7 +44,15 @@ export async function POST(req: Request, res: Response) {
         chapter_title: string;
       }[];
     }[];
+    /*
+    //Проверка политик безопасности, пока выключена
+    const checkResultOutput = await checkResult(title, units, policies);
+    const checkResultResult = JSON.parse(checkResultOutput);
 
+    if (checkResultResult["decision"] === false) {
+      return new NextResponse("checkResult fail", { status: 401 });
+    }
+    */
     let output: string = await createUnitsNChapters(title, units);
 
     const output_units: outputUnits = JSON.parse(output);
@@ -42,8 +69,9 @@ export async function POST(req: Request, res: Response) {
       data: {
         name: title,
         image: course_image,
-        userId: session.user.id,
+        authorId: session.user.id,
         views: 0,
+        totalDuration: 0,
       },
     });
 
@@ -63,6 +91,7 @@ export async function POST(req: Request, res: Response) {
             name: chapter.chapter_title,
             youtubeSearchQuery: chapter.youtube_search_query,
             unitId: prismaUnit.id,
+            duration: 0,
           };
         }),
       });
@@ -84,5 +113,6 @@ export async function POST(req: Request, res: Response) {
       return new NextResponse("invalid body", { status: 400 });
     }
     console.error(error);
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

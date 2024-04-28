@@ -43,26 +43,94 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  bio           String?   @db.VarChar(250)
+  isBanned      Boolean?  @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
   credits       Int       @default(2)
   role          String    @default("user")
 
-  accounts Account[]
-  sessions Session[]
-  courses  Course[]
-  messages Message[]
+  accounts  Account[]
+  sessions  Session[]
+  courses   Course[]        @relation("CreatedCourses")
+  follows   Follow[]        @relation("Follows")
+  followers Follow[]        @relation("FollowedBy")
+  comments  CourseComment[]
+  messages  Message[]
+  stats     Stats[]
+  tags      Tags[]
+  signIns   Logs[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Logs {
+  id         String   @id @default(cuid())
+  userId     String
+  ipAddress  String
+  signInTime DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], name: "userId")
+}
+
+model Follow {
+  followerId String
+  followedId String
+  createdAt  DateTime @default(now())
+
+  follower User @relation("Follows", fields: [followerId], references: [id], onDelete: Cascade)
+  followed User @relation("FollowedBy", fields: [followedId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followedId])
+  @@index([followerId], name: "followerId")
+  @@index([followedId], name: "followedId")
+}
+
+model Stats {
+  userId            String
+  chapterId         String
+  questionsAnswered Boolean @default(false)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  @@id([userId, chapterId])
+  @@index([userId], name: "userId")
+  @@index([chapterId], name: "chapterId")
 }
 
 // добавить просмотры, кнопку избранное и удалить
 model Course {
-  id     String @id @default(cuid())
-  name   String
-  image  String
-  views  Int    @default(0)
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  units  Unit[]
+  id            String          @id @default(cuid())
+  name          String
+  image         String
+  views         Int             @default(0)
+  hidden        Boolean         @default(false)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  totalDuration Int             @default(0)
+  tags          Tags[]
+  authorId      String
+  author        User            @relation("CreatedCourses", fields: [authorId], references: [id], onDelete: Cascade)
+  units         Unit[]
+  comments      CourseComment[]
 
-  @@index([userId], name: "id")
+  @@index([authorId], name: "authorId")
+}
+
+model Tags {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  enName  String
+  courses Course[]
+  users   User[]
 }
 
 // раздел
@@ -83,9 +151,11 @@ model Chapter {
   youtubeSearchQuery String
   videoId            String?
   summary            String?    @db.VarChar(3000)
+  duration           Int        @default(0)
   unit               Unit       @relation(fields: [unitId], references: [id], onDelete: Cascade)
   questions          Question[]
   messages           Message[]
+  stats              Stats[]
 
   @@index([unitId], name: "unitId")
 }
@@ -101,10 +171,23 @@ model Question {
   @@index([chapterId], name: "chapterId")
 }
 
-// добавить сообщения к главам
+model CourseComment {
+  id          String @id @default(cuid())
+  messageText String @db.VarChar(250)
+  courseId    String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([courseId], name: "courseId")
+  @@index([userId], name: "id")
+}
+
 model Message {
   id          String  @id @default(cuid())
-  messageText String  @db.VarChar(250)
+  content String  @db.VarChar(250)
+  createdAt     DateTime        @default(now())
+  role          String    
   chapterId   String
   userId      String
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)

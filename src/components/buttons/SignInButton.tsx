@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
 
 const SignInButton = () => {
@@ -9,7 +9,7 @@ const SignInButton = () => {
       type="button"
       variant="ghost"
       onClick={() => {
-        signIn("", { callbackUrl: "/create" });
+        signIn();
       }}
     >
       Войти

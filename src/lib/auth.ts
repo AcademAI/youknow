@@ -2,7 +2,9 @@ import { DefaultSession, NextAuthOptions, getServerSession } from "next-auth";
 import { prisma } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
 import YandexProvider from "next-auth/providers/yandex";
+import { sendVerificationRequest, sendWelcomeEmail } from "./resend";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -63,7 +65,22 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.YANDEX_CLIENT_ID as string,
       clientSecret: process.env.YANDEX_CLIENT_SECRET as string,
     }),
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.RESEND_API_KEY,
+        },
+      },
+      from: process.env.EMAIL_FROM,
+      sendVerificationRequest,
+    }),
   ],
+  pages: {
+    signIn: "/signin",
+  },
   theme: {
     colorScheme: "auto", // "auto" | "dark" | "light"
     brandColor: "", // Hex color code
