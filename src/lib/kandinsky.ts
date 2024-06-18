@@ -6,14 +6,14 @@ export async function getKandinskyImage(prompt: string) {
   );
 
   if (!response.ok) {
-    console.log("search term fail");
+    console.log("KANDINSKY: response not ok");
     return null;
   }
 
   const data = await response.json();
 
   if (!data || data.length === 0) {
-    console.log("search term fail");
+    console.log("KANDINSKY: data is empty");
     return null;
   }
 

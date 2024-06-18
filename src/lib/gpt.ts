@@ -25,7 +25,7 @@ export async function createUnitsNChapters(title: string, units: string[]) {
   const response = await fetch(
     `${VALIDATIONS_URL}/call_openai?action=createUnitsNChapters&title=${title}&units=${units}`
   );
-
+  console.log(response);
   if (!response.ok) {
     console.log("createUnitsNChapters fail");
     return null;

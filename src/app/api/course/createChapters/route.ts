@@ -9,6 +9,7 @@ import {
   createImageSearchTerm,
 } from "@/lib/gpt";
 import { getKandinskyImage } from "@/lib/kandinsky";
+import { getUnsplashImage } from "@/lib/unsplash";
 import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
@@ -36,6 +37,7 @@ export async function POST(req: Request, res: Response) {
 
     const body = await req.json();
     const { title, units } = createChaptersSchema.parse(body);
+    console.log(body);
 
     type outputUnits = {
       title: string;
@@ -56,7 +58,6 @@ export async function POST(req: Request, res: Response) {
     let output: string = await createUnitsNChapters(title, units);
 
     const output_units: outputUnits = JSON.parse(output);
-    console.log(output_units);
 
     const imageOutput = await createImageSearchTerm(title);
     const imageSearchTerm = JSON.parse(imageOutput);
@@ -65,10 +66,14 @@ export async function POST(req: Request, res: Response) {
       imageSearchTerm.image_search_term
     );
 
+    const unsplash_image = await getUnsplashImage(
+      imageSearchTerm.image_search_term
+    );
+
     const course = await prisma.course.create({
       data: {
         name: title,
-        image: course_image,
+        image: course_image ? course_image : unsplash_image,
         authorId: session.user.id,
         views: 0,
         totalDuration: 0,
