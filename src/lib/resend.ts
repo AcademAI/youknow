@@ -29,7 +29,6 @@ export const sendWelcomeEmail = async ({
       react: emailTemplate,
     });
   } catch (error) {
-    // Log any errors and re-throw the error
     console.log({ error });
     throw error;
   }
