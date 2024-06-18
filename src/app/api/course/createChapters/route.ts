@@ -53,7 +53,6 @@ export async function POST(req: Request, res: Response) {
       return new NextResponse("checkResult fail", { status: 401 });
     }
     */
-
     let output: string = await createUnitsNChapters(title, units);
 
     const output_units: outputUnits = JSON.parse(output);
