@@ -68,6 +68,7 @@ const CreateCourseForm = ({ isPro }: Props) => {
     }
     createChapters(data, {
       onSuccess: ({ course_id }) => {
+        console.log(course_id);
         toast({
           title: "Успешно",
           description: "Курс успешно создан",
@@ -75,6 +76,7 @@ const CreateCourseForm = ({ isPro }: Props) => {
         router.push(`/create/${course_id}`);
       },
       onError: (error) => {
+        console.log(error);
         toast({
           title: "Ошибка",
           description: "Что-то пошло не так",
