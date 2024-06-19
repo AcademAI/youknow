@@ -14,21 +14,6 @@ import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
 export async function POST(req: Request, res: Response) {
-  const policies = [
-    "Порнография",
-    "SQL и другие инъекции",
-    "Насилие и жестокость",
-    "Дискриминация и ненависть",
-    "Незаконная деятельность",
-    "Оскорбления и клевета",
-    "Манипуляция и дезинформация",
-    "Пропаганда ЛГБТ",
-    "Экстремизм и терроризм",
-    "Изготовление взрывчатки",
-    "Украина и Россия",
-    "Оправдание нацизма",
-    "Наркотики",
-  ];
   try {
     const session = await getAuthSession();
     if (!session?.user) {
@@ -37,7 +22,6 @@ export async function POST(req: Request, res: Response) {
 
     const body = await req.json();
     const { title, units } = createChaptersSchema.parse(body);
-    console.log(body);
 
     type outputUnits = {
       title: string;
@@ -62,65 +46,78 @@ export async function POST(req: Request, res: Response) {
     const imageOutput = await createImageSearchTerm(title);
     const imageSearchTerm = JSON.parse(imageOutput);
 
-    let course_image = null;
+    let course_image = await getKandinskyImage(
+      imageSearchTerm.image_search_term
+    );
 
-    try {
-      course_image = await getKandinskyImage(imageSearchTerm.image_search_term);
-    } catch (error) {
-      console.error("Failed to generate Kandinsky image:", error);
+    if (!course_image) {
+      course_image = await getUnsplashImage(imageSearchTerm.image_search_term);
     }
-
-    course_image =
-      course_image ||
-      (await getUnsplashImage(imageSearchTerm.image_search_term));
-
-    const course = await prisma.course.create({
-      data: {
-        name: title,
-        image: course_image,
-        authorId: session.user.id,
-        views: 0,
-        totalDuration: 0,
-      },
-    });
-
-    for (const unit of output_units) {
-      console.log(unit);
-      const title = unit.title;
-      const prismaUnit = await prisma.unit.create({
+    const result = await prisma.$transaction(async (prisma) => {
+      const course = await prisma.course.create({
         data: {
           name: title,
-          courseId: course.id,
+          image: course_image,
+          authorId: session.user.id,
+          views: 0,
+          totalDuration: 0,
         },
       });
-      //console.log(unit.chapters);
-      await prisma.chapter.createMany({
-        data: unit.chapters.map((chapter) => {
-          return {
-            name: chapter.chapter_title,
-            youtubeSearchQuery: chapter.youtube_search_query,
-            unitId: prismaUnit.id,
-            duration: 0,
-          };
-        }),
-      });
-    }
-    await prisma.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
-        credits: {
-          decrement: 1,
-        },
-      },
-    });
 
-    return NextResponse.json({ course_id: course.id });
+      for (const unit of output_units) {
+        console.log(unit);
+        const title = unit.title;
+        const prismaUnit = await prisma.unit.create({
+          data: {
+            name: title,
+            courseId: course.id,
+          },
+        });
+        //console.log(unit.chapters);
+        await prisma.chapter.createMany({
+          data: unit.chapters.map((chapter) => {
+            return {
+              name: chapter.chapter_title,
+              youtubeSearchQuery: chapter.youtube_search_query,
+              unitId: prismaUnit.id,
+              duration: 0,
+            };
+          }),
+        });
+      }
+      await prisma.user.update({
+        where: {
+          id: session.user.id,
+        },
+        data: {
+          credits: {
+            decrement: 1,
+          },
+        },
+      });
+      console.log(course.id);
+      return course.id; // Return the course ID after successful creation
+    });
+    return NextResponse.json({ course_id: result });
   } catch (error) {
     if (error instanceof ZodError) {
-      return new NextResponse("invalid body", { status: 400 });
+      console.log(error);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid body",
+        },
+        { status: 400 }
+      );
+    } else {
+      console.log(error);
+      return NextResponse.json(
+        {
+          success: false,
+          error: error,
+        },
+        { status: 500 }
+      );
     }
-    console.error(error);
   }
 }
