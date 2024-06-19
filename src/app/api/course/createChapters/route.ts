@@ -62,18 +62,18 @@ export async function POST(req: Request, res: Response) {
     const imageOutput = await createImageSearchTerm(title);
     const imageSearchTerm = JSON.parse(imageOutput);
 
-    const course_image = await getKandinskyImage(
+    let course_image = await getKandinskyImage(
       imageSearchTerm.image_search_term
     );
 
-    const unsplash_image = await getUnsplashImage(
-      imageSearchTerm.image_search_term
-    );
+    if (!course_image) {
+      course_image = await getUnsplashImage(imageSearchTerm.image_search_term);
+    }
 
     const course = await prisma.course.create({
       data: {
         name: title,
-        image: course_image ? course_image : unsplash_image,
+        image: course_image,
         authorId: session.user.id,
         views: 0,
         totalDuration: 0,
@@ -118,6 +118,5 @@ export async function POST(req: Request, res: Response) {
       return new NextResponse("invalid body", { status: 400 });
     }
     console.error(error);
-    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }
