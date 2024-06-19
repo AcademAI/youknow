@@ -22,6 +22,7 @@ export async function POST(req: Request, res: Response) {
 
     const body = await req.json();
     const { title, units } = createChaptersSchema.parse(body);
+    console.log(body);
 
     type outputUnits = {
       title: string;
@@ -50,71 +51,53 @@ export async function POST(req: Request, res: Response) {
       imageSearchTerm.image_search_term
     );
 
-    const result = await prisma.$transaction(async (prisma) => {
-      const course = await prisma.course.create({
+    const course = await prisma.course.create({
+      data: {
+        name: title,
+        image: course_image,
+        authorId: session.user.id,
+        views: 0,
+        totalDuration: 0,
+      },
+    });
+
+    for (const unit of output_units) {
+      console.log(unit);
+      const title = unit.title;
+      const prismaUnit = await prisma.unit.create({
         data: {
           name: title,
-          image: course_image,
-          authorId: session.user.id,
-          views: 0,
-          totalDuration: 0,
+          courseId: course.id,
         },
       });
-
-      for (const unit of output_units) {
-        console.log(unit);
-        const title = unit.title;
-        const prismaUnit = await prisma.unit.create({
-          data: {
-            name: title,
-            courseId: course.id,
-          },
-        });
-        //console.log(unit.chapters);
-        await prisma.chapter.createMany({
-          data: unit.chapters.map((chapter) => {
-            return {
-              name: chapter.chapter_title,
-              youtubeSearchQuery: chapter.youtube_search_query,
-              unitId: prismaUnit.id,
-              duration: 0,
-            };
-          }),
-        });
-      }
-      await prisma.user.update({
-        where: {
-          id: session.user.id,
-        },
-        data: {
-          credits: {
-            decrement: 1,
-          },
-        },
+      //console.log(unit.chapters);
+      await prisma.chapter.createMany({
+        data: unit.chapters.map((chapter) => {
+          return {
+            name: chapter.chapter_title,
+            youtubeSearchQuery: chapter.youtube_search_query,
+            unitId: prismaUnit.id,
+            duration: 0,
+          };
+        }),
       });
-      console.log(course.id);
-      return course.id; // Return the course ID after successful creation
+    }
+    await prisma.user.update({
+      where: {
+        id: session.user.id,
+      },
+      data: {
+        credits: {
+          decrement: 1,
+        },
+      },
     });
-    return NextResponse.json({ course_id: result });
+
+    return NextResponse.json({ course_id: course.id });
   } catch (error) {
     if (error instanceof ZodError) {
-      console.log(error);
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Invalid body",
-        },
-        { status: 400 }
-      );
-    } else {
-      console.log(error);
-      return NextResponse.json(
-        {
-          success: false,
-          error: error,
-        },
-        { status: 500 }
-      );
+      return new NextResponse("invalid body", { status: 400 });
     }
+    console.error(error);
   }
 }
