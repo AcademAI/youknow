@@ -14,23 +14,23 @@ import { prisma } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
 export async function POST(req: Request, res: Response) {
-  // try {
-  const session = await getAuthSession();
-  if (!session?.user) {
-    return NextResponse.json({ error: "unauthorised" }, { status: 401 });
-  }
+  try {
+    const session = await getAuthSession();
+    if (!session?.user) {
+      return NextResponse.json({ error: "unauthorised" }, { status: 401 });
+    }
 
-  const body = await req.json();
-  const { title, units } = createChaptersSchema.parse(body);
+    const body = await req.json();
+    const { title, units } = createChaptersSchema.parse(body);
 
-  type outputUnits = {
-    title: string;
-    chapters: {
-      youtube_search_query: string;
-      chapter_title: string;
+    type outputUnits = {
+      title: string;
+      chapters: {
+        youtube_search_query: string;
+        chapter_title: string;
+      }[];
     }[];
-  }[];
-  /*
+    /*
     //Проверка политик безопасности, пока выключена
     const checkResultOutput = await checkResult(title, units, policies);
     const checkResultResult = JSON.parse(checkResultOutput);
@@ -39,70 +39,82 @@ export async function POST(req: Request, res: Response) {
       return new NextResponse("checkResult fail", { status: 401 });
     }
     */
-  let output: string = await createUnitsNChapters(title, units);
+    let output: string = await createUnitsNChapters(title, units);
 
-  const output_units: outputUnits = JSON.parse(output);
+    const output_units: outputUnits = JSON.parse(output);
 
-  const imageOutput = await createImageSearchTerm(title);
-  const imageSearchTerm = JSON.parse(imageOutput);
+    const imageOutput = await createImageSearchTerm(title);
+    const imageSearchTerm = JSON.parse(imageOutput);
 
-  let course_image = await getKandinskyImage(imageSearchTerm.image_search_term);
+    const course_image = await getUnsplashImage(
+      imageSearchTerm.image_search_term
+    );
 
-  if (!course_image) {
-    course_image = await getUnsplashImage(imageSearchTerm.image_search_term);
-  }
-  const result = await prisma.$transaction(async (prisma) => {
-    const course = await prisma.course.create({
-      data: {
-        name: title,
-        image: course_image,
-        authorId: session.user.id,
-        views: 0,
-        totalDuration: 0,
-      },
-    });
-
-    for (const unit of output_units) {
-      console.log(unit);
-      const title = unit.title;
-      const prismaUnit = await prisma.unit.create({
+    const result = await prisma.$transaction(async (prisma) => {
+      const course = await prisma.course.create({
         data: {
           name: title,
-          courseId: course.id,
+          image: course_image,
+          authorId: session.user.id,
+          views: 0,
+          totalDuration: 0,
         },
       });
-      //console.log(unit.chapters);
-      await prisma.chapter.createMany({
-        data: unit.chapters.map((chapter) => {
-          return {
-            name: chapter.chapter_title,
-            youtubeSearchQuery: chapter.youtube_search_query,
-            unitId: prismaUnit.id,
-            duration: 0,
-          };
-        }),
-      });
-    }
-    await prisma.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
-        credits: {
-          decrement: 1,
+
+      for (const unit of output_units) {
+        console.log(unit);
+        const title = unit.title;
+        const prismaUnit = await prisma.unit.create({
+          data: {
+            name: title,
+            courseId: course.id,
+          },
+        });
+        //console.log(unit.chapters);
+        await prisma.chapter.createMany({
+          data: unit.chapters.map((chapter) => {
+            return {
+              name: chapter.chapter_title,
+              youtubeSearchQuery: chapter.youtube_search_query,
+              unitId: prismaUnit.id,
+              duration: 0,
+            };
+          }),
+        });
+      }
+      await prisma.user.update({
+        where: {
+          id: session.user.id,
         },
-      },
+        data: {
+          credits: {
+            decrement: 1,
+          },
+        },
+      });
+      console.log(course.id);
+      return course.id; // Return the course ID after successful creation
     });
-    console.log(course.id);
-    return course.id; // Return the course ID after successful creation
-  });
-  return NextResponse.json({ course_id: result });
-  /* } catch (error) {
+    return NextResponse.json({ course_id: result });
+  } catch (error) {
     if (error instanceof ZodError) {
       console.log(error);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Invalid body",
+        },
+        { status: 400 }
+      );
     } else {
       console.log(error);
+      return NextResponse.json(
+        {
+          success: false,
+          error: error,
+        },
+        { status: 500 }
+      );
     }
   }
-  */
 }
