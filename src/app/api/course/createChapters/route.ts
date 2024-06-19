@@ -62,13 +62,17 @@ export async function POST(req: Request, res: Response) {
     const imageOutput = await createImageSearchTerm(title);
     const imageSearchTerm = JSON.parse(imageOutput);
 
-    let course_image = await getKandinskyImage(
-      imageSearchTerm.image_search_term
-    );
+    let course_image = null;
 
-    if (!course_image) {
-      course_image = await getUnsplashImage(imageSearchTerm.image_search_term);
+    try {
+      course_image = await getKandinskyImage(imageSearchTerm.image_search_term);
+    } catch (error) {
+      console.error("Failed to generate Kandinsky image:", error);
     }
+
+    course_image =
+      course_image ||
+      (await getUnsplashImage(imageSearchTerm.image_search_term));
 
     const course = await prisma.course.create({
       data: {
