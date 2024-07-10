@@ -8,14 +8,6 @@
         	Personalized course generation platform
    		</strong>
 	</p>
-	<p align="center">
-		<a href="https://github.com/AcademAI/youknow/releases">
-        	<img src="https://img.shields.io/github/v/release/AcademAI/youknow.svg" alt="Release" />
-		</a>
-		<a href="https://github.com/AcademAI/youknow/blob/master/LICENSE">
-        	<img src="https://img.shields.io/github/license/AcademAI/youknow.svg" alt="License" />
-		</a>
-    </p>
     <p align="center">
     	<a href="https://github.com/AcademAI/youknow/pulse">
         	<img src="https://img.shields.io/github/commit-activity/m/AcademAI/youknow" alt="Activity" />
