@@ -5,8 +5,6 @@ services:
     build:
       context: ./typescript_app
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
     restart: unless-stopped
 
   mysql:
@@ -15,8 +13,8 @@ services:
     restart: unless-stopped
 
     environment:
-      MYSQL_ROOT_PASSWORD: 12345
-      MYSQL_DATABASE: youknow_database
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
 
   app1:
     container_name: youknow_validations
