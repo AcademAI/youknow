@@ -47,10 +47,13 @@ export async function POST(req: Request, res: Response) {
     const imageOutput = await createImageSearchTerm(title);
     const imageSearchTerm = JSON.parse(imageOutput);
 
-    const course_image = await getUnsplashImage(
+    let course_image = await getKandinskyImage(
       imageSearchTerm.image_search_term
     );
 
+    if (!course_image) {
+      course_image = await getUnsplashImage(imageSearchTerm.image_search_term);
+    }
     const course = await prisma.course.create({
       data: {
         name: title,

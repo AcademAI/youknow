@@ -1,8 +1,40 @@
-version: '3'
+version: "3"
 services:
-  nextjs:
+  app:
+    container_name: youknow
     build:
-      context: .
+      context: ./typescript_app
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    restart: unless-stopped
+
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_DATABASE: youknow_database
+
+  app1:
+    container_name: youknow_validations
+
+    build:
+      context: ./youknow_validations
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+  app2:
+    container_name: youknow_ytscraper
+
+    build:
+      context: ./youknow_ytscraper
+      dockerfile: Dockerfile
+    restart: unless-stopped
+
+networks:
+  default:
+    external: true
+    name: npm
