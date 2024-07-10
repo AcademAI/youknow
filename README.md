@@ -9,9 +9,6 @@
    		</strong>
 	</p>
 	<p align="center">
-		<a href="https://github.com/topics/typescript">
-        	<img src="https://img.shields.io/github/go-mod/go-version/number571/go-peer" alt="Go" />
-		</a>
 		<a href="https://github.com/AcademAI/youknow/releases">
         	<img src="https://img.shields.io/github/v/release/AcademAI/youknow.svg" alt="Release" />
 		</a>
