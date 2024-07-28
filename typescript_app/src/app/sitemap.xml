@@ -17,10 +17,4 @@
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
-  <url>
-    <loc>https://youknow.academai.ru/create</loc>
-    <lastmod>2024-03-06T15:02:24.021Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
 </urlset>
