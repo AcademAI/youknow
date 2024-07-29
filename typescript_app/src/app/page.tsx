@@ -28,7 +28,7 @@ const MainPage = async (props: Props) => {
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-red-500 to-blue-500">
                     образовательных
                   </span>
-                  курсов на любую тематику с GPT
+                  курсов на любую тематику с GPT!
                 </h1>
               </div>
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
