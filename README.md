@@ -21,7 +21,7 @@
 
 ## Purpose
 
-The goal of the system is to automate the process of online self-education, which will allow generating the structure and contents of educational courses according to the needs of the learner with the help of LLM.
+The system's goal is to automate the process of online self-education, which will allow generating the structure and contents of educational courses according to the needs of the learner with the help of LLM.
 
 The platform's main features include:
 
