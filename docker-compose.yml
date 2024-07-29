@@ -10,11 +10,14 @@ services:
   mysql:
     container_name: mysql
     image: mysql:latest
+    volumes:
+      - mysql_data:/var/lib/mysql
     restart: unless-stopped
 
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: $MYSQL_DATABASE
+      LANG: $LANG
 
   app1:
     container_name: youknow_validations
@@ -36,3 +39,6 @@ networks:
   default:
     external: true
     name: npm
+
+volumes:
+  mysql_data:

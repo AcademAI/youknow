@@ -7,15 +7,27 @@ on:
 
 jobs:
   Production:
-    name: Deploy to Homelab
+    name: Deploy to VPS
     runs-on: ubuntu-latest
     environment: Production
     steps:
-      - name: Cloudflared SSH Run Remote Commands
-        uses: npgy/cloudflared-ssh-action@v2.0
-        with:
-          host: ${{ vars.SSH_HOST }}
-          username: ${{ secrets.USER_NAME }}
-          private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.PORT }}
-          commands: cd /root/youknow; git reset --hard; git checkout main; git pull origin main; docker-compose down; docker network create npm; docker-compose up -d; docker image prune -a -f
+      - uses: actions/checkout@v3
+      - name: Build & Deploy
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{secrets.SSH_HOST}}
+          USER_NAME: ${{secrets.USER_NAME}}
+          PORT: ${{secrets.PORT}}
+
+        run: |
+          echo "Deploying to VPS"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key -p ${{secrets.PORT}} ${{ secrets.USER_NAME }}@${{ secrets.SSH_HOST }} '
+          cd /root/landingPage &&
+          git reset --hard &&
+          git checkout main &&
+          git pull origin main &&
+          docker-compose down &&
+          docker-compose rm -fsv &&
+          docker-compose up --build -d
+          '
