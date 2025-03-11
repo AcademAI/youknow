@@ -6,6 +6,8 @@ services:
       context: ./typescript_app
       dockerfile: Dockerfile
     restart: unless-stopped
+    #ports:
+    #  - "8080:3000"  # Maps host port 8080 to container port 3000 for local debug
 
   mysql:
     container_name: mysql

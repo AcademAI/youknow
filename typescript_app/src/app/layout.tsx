@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   generator: "Next.js",
   applicationName: "YouKnow",
   keywords: [
-    "Онлайн курс",
+    "Онлайн курс", 
     "Образование",
     "Обучение",
     "ИИ",

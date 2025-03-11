@@ -4,6 +4,7 @@ import LoadMoreFeedCourses from "@/components/LoadMoreFeedCourses";
 import { getCoursesFeed } from "@/lib/actions";
 import type { Metadata, ResolvingMetadata } from "next";
 
+
 type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
@@ -11,9 +12,9 @@ type Props = {
 const FeedPage = async ({ searchParams }: Props) => {
   const session = await getAuthSession();
   const search =
-    typeof searchParams.search === "string" ? searchParams.search : undefined;
+    typeof searchParams?.search === "string" ? searchParams.search : undefined;
 
-  const courses = await getCoursesFeed({ query: search });
+  const courses = await getCoursesFeed({ query: await search });
   return (
     <section className="py-8 mx-auto max-w-7xl">
       <div className="mb-12 flex flex-col sm:flex-row items-center justify-between gap-x-16">

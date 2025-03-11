@@ -2,7 +2,7 @@ from langchain.schema import HumanMessage, SystemMessage
 from langchain.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
-import tenacity
+
 from tenacity import retry, stop_after_attempt, wait_fixed
 import httpx
 import json
@@ -10,14 +10,19 @@ import json
 
 class OpenAIChatImpl:
     def __init__(self, **kwargs):
- 
-        self.openaichat = ChatOpenAI(api_key=kwargs.get('OPENAI_API_KEY'), 
-        http_client=httpx.Client(proxies=f'http://{kwargs.get("PROXY_LOGIN")}:{kwargs.get("PROXY_PASSWORD")}@{kwargs.get("PROXY_IP")}:{kwargs.get("PROXY_PORT")}/'), 
-        verbose=False, 
-        temperature=0.1, 
-        max_retries=3)
+        # Construct the proxy URL
+        proxy_url = f'http://{kwargs.get("PROXY_LOGIN")}:{kwargs.get("PROXY_PASSWORD")}@{kwargs.get("PROXY_IP")}:{kwargs.get("PROXY_PORT")}'
+        
+        # Initialize the ChatOpenAI with the corrected proxy parameter
+        self.openaichat = ChatOpenAI(
+            api_key=kwargs.get('OPENAI_API_KEY'), 
+            http_client=httpx.Client(proxy=proxy_url),  # Use 'proxy' instead of 'proxies'
+            verbose=False, 
+            temperature=0.1, 
+            max_retries=3
+        )
 
-
+    @retry(stop=stop_after_attempt(3), wait=wait_fixed(10))
     async def createUnitsNChapters(self, title, units):
         units_list = units.split(",")
         response_schemas = []
@@ -46,7 +51,7 @@ class OpenAIChatImpl:
                                             unitsLength=len(units),
                                             format_instructions=format_instructions)
         
-        response = self.openaichat(messages)
+        response = self.openaichat.invoke(messages)
         response_as_dict = output_parser.parse(response.content)
         print(response_as_dict)
         result = []
@@ -89,7 +94,7 @@ class OpenAIChatImpl:
         messages = prompt.format_messages(title=title, 
                                             format_instructions=format_instructions)
         
-        response = self.openaichat(messages)
+        response = self.openaichat.invoke(messages)
         #print(response.content)
         response_as_dict = output_parser.parse(response.content)
        #print(response.content)
@@ -127,7 +132,7 @@ class OpenAIChatImpl:
         messages = prompt.format_messages(transcript=transcript, 
                                             format_instructions=format_instructions)
         
-        response = self.openaichat(messages)
+        response = self.openaichat.invoke(messages)
         print(response.content)
         response_as_dict = output_parser.parse(response.content)
 
@@ -166,7 +171,7 @@ class OpenAIChatImpl:
                                             chapterName=chapterName,
                                             format_instructions=format_instructions)
         
-        response = self.openaichat(messages)
+        response = self.openaichat.invoke(messages)
         print(response.content)
         response_as_dict = output_parser.parse(response.content)
 
@@ -205,7 +210,7 @@ class OpenAIChatImpl:
                                             policies=policies, 
                                             format_instructions=format_instructions)
         
-        response = self.openaichat(messages)
+        response = self.openaichat.invoke(messages)
         
         response_as_dict = output_parser.parse(response.content)
         result_json = json.dumps(response_as_dict, indent=4)

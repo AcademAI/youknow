@@ -12,7 +12,7 @@ import axios from "axios";
 import MessageList from "./MessageList";
 import { SendHorizontalIcon } from "lucide-react";
 
-import { toast } from "sonner";
+import { useToast } from "./ui/use-toast";
 import { useQuery } from "@tanstack/react-query";
 
 interface ChatProps {
@@ -24,6 +24,7 @@ export default function Chat({ chapter, session }: ChatProps) {
   let userId = session?.user?.id;
   let chapterId = chapter.id;
 
+  const { toast } = useToast();
   const ref = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useQuery({
     queryKey: ["chapter", chapter.id],
@@ -46,7 +47,13 @@ export default function Chat({ chapter, session }: ChatProps) {
         const status = response.status;
         switch (status) {
           default:
-            toast.error(error?.message || "Something went wrong!");
+            console.log(error);
+            toast({
+              title: "Ошибка",
+              description: "Что-то пошло не так",
+              variant: "destructive",
+
+            });
             break;
         }
       }

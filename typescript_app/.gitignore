@@ -15,6 +15,7 @@
 
 # production
 /build
+latestdump.sql
 
 # misc
 .DS_Store
