@@ -1,7 +1,7 @@
-import { MainVideo } from "@/types/types";
+import { MainVideoType } from "@/types/types";
 import React from "react";
 
-const MainVideo = ({ unit, unitIndex, chapter, chapterIndex }: MainVideo) => {
+const MainVideo = ({ unit, unitIndex, chapter, chapterIndex }: MainVideoType) => {
   return (
     <div className="flex-[2] mt-5">
       <h4 className="text-sm uppercase text-secondary-foreground/60">

@@ -19,8 +19,9 @@ type Props = {
   };
 };
 
-const CoursePage = async ({ params: { slug } }: Props) => {
+const CoursePage = async ({ params}: Props) => {
   const session = await getAuthSession();
+  const { slug } = await params; // Destructure slug from params
 
   const [courseId, unitIndexParam, chapterIndexParam] = slug;
   const course = await prisma.course.findUnique({
@@ -178,8 +179,9 @@ const CoursePage = async ({ params: { slug } }: Props) => {
   );
 };
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: Props): Promise<Metadata> {
+  const { slug } = await params; // Destructure slug from params
   const [courseId, unitIndexParam, chapterIndexParam] = slug;
   const course = await prisma.course.findUnique({
     where: { id: courseId },

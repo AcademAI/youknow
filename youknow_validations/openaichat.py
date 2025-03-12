@@ -6,10 +6,13 @@ from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from tenacity import retry, stop_after_attempt, wait_fixed
 import httpx
 import json
+import logging
 
+logger = logging.getLogger(__name__)
 
 class OpenAIChatImpl:
     def __init__(self, **kwargs):
+        logger.info("Initializing OpenAIChatImpl")
         # Construct the proxy URL
         proxy_url = f'http://{kwargs.get("PROXY_LOGIN")}:{kwargs.get("PROXY_PASSWORD")}@{kwargs.get("PROXY_IP")}:{kwargs.get("PROXY_PORT")}'
         

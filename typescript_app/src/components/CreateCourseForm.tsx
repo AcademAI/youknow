@@ -24,7 +24,7 @@ type Input = z.infer<typeof createChaptersSchema>;
 const CreateCourseForm = ({ isPro }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
-  const { mutate: createChapters, isLoading } = useMutation({
+  const { mutate: createChapters, isPending } = useMutation({
     mutationFn: async ({ title, units }: Input) => {
       const response = await axios.post("/api/course/createChapters", {
         title,
@@ -88,7 +88,7 @@ const CreateCourseForm = ({ isPro }: Props) => {
 
   form.watch();
 
-  if (isLoading) {
+  if (isPending) {
     return <Spinner />;
   }
 
@@ -179,12 +179,12 @@ const CreateCourseForm = ({ isPro }: Props) => {
             <Separator className="flex-[1]" />
           </div>
           <Button
-            disabled={isLoading}
+            disabled={isPending}
             type="submit"
             className="w-full mt-6"
             size="lg"
           >
-            {isLoading ? <Spinner /> : "Поехали"}
+            {isPending ? <Spinner /> : "Поехали"}
           </Button>
         </form>
       </Form>

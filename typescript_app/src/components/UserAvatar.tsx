@@ -11,7 +11,7 @@ const UserAvatar = ({ user }: Props) => {
   return (
     <Avatar>
       {user.image ? (
-        <div className="relative w-ful h-full aspect-square">
+        <div className="relative w-ful h-full aspect-square cursor-pointer">
           <Image
             fill
             src={user.image}

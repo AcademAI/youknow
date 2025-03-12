@@ -3,3 +3,5 @@ venv/
 data.txt
 .env
 __pycache__
+logs
+image.png

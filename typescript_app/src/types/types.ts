@@ -73,7 +73,7 @@ export type ChapterQuestionsRole = {
   session: any;
 };
 
-export type MainVideo = {
+export type MainVideoType = {
   userId: string;
   chapter: Chapter;
   unit: Unit;

@@ -1,5 +1,5 @@
 "use client";
-import { Course, User, Stats, Chapter, Unit } from "@prisma/client";
+import { User, Stats, Chapter } from "@prisma/client";
 import { Separator } from "../ui/separator";
 import { CourseWithUnits } from "@/types/types";
 import { Gauge } from "../gauge";
@@ -17,10 +17,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import ChapterVisible from "@/components/ChapterVisible";
-
-import { prisma } from "@/lib/db";
 import Link from "next/link";
+
 type Props = {
   author: User & {
     stats: Stats[];
@@ -29,7 +27,7 @@ type Props = {
   chapters: Chapter[];
 };
 //https://dev.to/mfts/build-an-expandable-data-table-with-2-shadcnui-components-4nge
-export const ProfileStats = async ({ author, courses, chapters }: Props) => {
+export const ProfileStats = ({ author, courses, chapters }: Props) => {
   const passedChapters = chapters.map((chapter) => chapter.id);
 
   return (
@@ -77,16 +75,16 @@ export const ProfileStats = async ({ author, courses, chapters }: Props) => {
                 return (
                   <Collapsible key={course.id} asChild>
                     <>
-                      {" "}
+                      
                       <CollapsibleTrigger asChild>
                         <TableRow className="cursor-pointer bg-secondary">
                           <TableCell className="capitalize">
                             {course.name}
                           </TableCell>
                           <TableCell>
-                            <Link
-                              href={`https://youknow.academai.ru/course/${course.id}/0/0`}
-                            >{`https://youknow.academai.ru/course/${course.id}/0/0`}</Link>
+                          <Link href={`/course/${course.id}/0/0`}>
+                            {`/course/${course.id}/0/0`}
+                          </Link>
                           </TableCell>
                           <TableCell>
                             <div>
@@ -121,11 +119,11 @@ export const ProfileStats = async ({ author, courses, chapters }: Props) => {
                                   {chapter.name}
                                 </TableCell>
                                 <TableCell>
-                                  <Link
-                                    href={`https://youknow.academai.ru/course/${course.id}/${unitIndex}/${chapterIndex}`}
-                                  >
-                                    {`https://youknow.academai.ru/course/${course.id}/${unitIndex}/${chapterIndex}`}
-                                  </Link>
+                                <Link
+                                  href={`/course/${course.id}/${unitIndex}/${chapterIndex}`}
+                                >
+                                  {`/course/${course.id}/${unitIndex}/${chapterIndex}`}
+                                </Link>
                                 </TableCell>
                                 <TableCell>
                                   {(() => {

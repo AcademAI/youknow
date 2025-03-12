@@ -1,4 +1,4 @@
-import logging
+from config.logging import setup_logger
 import os
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
@@ -7,19 +7,38 @@ from openaichat import OpenAIChatImpl
 from kandinsky import Kadninsky_impl
 from dotenv import load_dotenv
 
-load_dotenv()
-logging.basicConfig(level=logging.INFO)
+# Настройка логирования
+logger = setup_logger()
+
+# Загрузка переменных окружения
+try:
+    load_dotenv()
+    logger.info("Environment variables loaded successfully")
+except Exception as e:
+    logger.error(f"Error loading environment variables: {str(e)}")
+    raise
  
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-KANDINSKY_API_KEY = os.getenv('KANDINSKY_API_KEY')
-KADNINSKY_SECRET_KEY = os.getenv('KADNINSKY_SECRET_KEY')
-IMGUR_CLIENT_ID= os.getenv('IMGUR_CLIENT_ID')
-PROXY_LOGIN = os.getenv('PROXY_LOGIN')
-PROXY_PASSWORD = os.getenv('PROXY_PASSWORD')
-PROXY_IP = os.getenv('PROXY_IP')
-PROXY_PORT = os.getenv('PROXY_PORT')
-YOUKNOW_URL = os.getenv('YOUKNOW_URL')
-VALIDATIONS_URL = os.getenv('VALIDATIONS_URL')
+ # Загрузка конфигурации из .env
+try:
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    KANDINSKY_API_KEY = os.getenv('KANDINSKY_API_KEY')
+    KADNINSKY_SECRET_KEY = os.getenv('KADNINSKY_SECRET_KEY')
+    IMGUR_CLIENT_ID= os.getenv('IMGUR_CLIENT_ID')
+    PROXY_LOGIN = os.getenv('PROXY_LOGIN')
+    PROXY_PASSWORD = os.getenv('PROXY_PASSWORD')
+    PROXY_IP = os.getenv('PROXY_IP')
+    PROXY_PORT = os.getenv('PROXY_PORT')
+    YOUKNOW_URL = os.getenv('YOUKNOW_URL')
+    VALIDATIONS_URL = os.getenv('VALIDATIONS_URL')
+
+    if not all([OPENAI_API_KEY, KANDINSKY_API_KEY, KADNINSKY_SECRET_KEY, IMGUR_CLIENT_ID, PROXY_LOGIN, PROXY_PASSWORD, PROXY_IP, PROXY_PORT, YOUKNOW_URL, VALIDATIONS_URL]):
+        logger.error("Missing required environment variables")
+        raise ValueError("Missing required environment variables")
+        
+    logger.info("Configuration loaded successfully")
+except Exception as e:
+    logger.error(f"Error loading configuration: {str(e)}")
+    raise
 
 class Server:
     def __init__(self):

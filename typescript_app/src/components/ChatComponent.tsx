@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat } from "ai/react";
+import { useChat } from "@ai-sdk/react";
 import { useEffect, useRef, useState } from "react";
 import { Chapter } from "@prisma/client";
 import { Message } from "ai";

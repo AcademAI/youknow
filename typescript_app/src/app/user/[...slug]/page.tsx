@@ -19,8 +19,9 @@ type Props = {
   };
 };
 
-const UserPage = async ({ params: { slug } }: Props) => {
+const UserPage = async ({ params }: Props) => {
   const session = await getAuthSession();
+  const { slug } = await params; // Destructure slug from params
   const [authorId] = slug;
 
   const author = await prisma.user.findUnique({
@@ -155,8 +156,9 @@ const UserPage = async ({ params: { slug } }: Props) => {
   );
 };
 export async function generateMetadata({
-  params: { slug },
+  params,
 }: Props): Promise<Metadata> {
+  const { slug } = await params; // Destructure slug from params
   const [authorId] = slug;
   const author = await prisma.user.findUnique({
     where: { id: authorId },

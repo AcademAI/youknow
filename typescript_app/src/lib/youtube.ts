@@ -11,6 +11,7 @@ export async function searchYoutube(searchQuery: string) {
   // Check if the response is ok
   if (!response.ok) {
     console.log("youtube fail");
+    console.log(response);
     return null;
   }
 

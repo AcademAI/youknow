@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import { Info } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
-import { revalidatePath } from "next/cache";
+//import { revalidatePath } from "next/cache";
 
 type Props = {
   params: {
@@ -12,8 +12,9 @@ type Props = {
   };
 };
 
-const CreateChapters = async ({ params: { courseId } }: Props) => {
+const CreateChapters = async ({ params }: Props) => {
   const session = await getAuthSession();
+  const { courseId } = await params;
   if (!session?.user) {
     return redirect("/gallery");
   }
@@ -29,8 +30,8 @@ const CreateChapters = async ({ params: { courseId } }: Props) => {
       },
     },
   });
-  const pathToRevalidate = `/user/${session?.user?.id}`;
-  revalidatePath(pathToRevalidate);
+  //const pathToRevalidate = `/user/${session?.user?.id}`;
+  //revalidatePath(pathToRevalidate);
   if (!course) {
     return redirect("/create");
   }

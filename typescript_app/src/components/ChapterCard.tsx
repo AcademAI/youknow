@@ -22,7 +22,7 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, Props>(
   ({ chapter, chapterIndex, setCompletedChapters, completedChapters }, ref) => {
     const { toast } = useToast();
     const [success, setSuccess] = React.useState<boolean | null>(null);
-    const { mutate: getChapterInfo, isLoading } = useMutation({
+    const { mutate: getChapterInfo, isPending } = useMutation({
       mutationFn: async () => {
         const response = await axios.post("/api/chapter/getInfo", {
           chapterId: chapter.id,
@@ -80,7 +80,7 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, Props>(
         })}
       >
         <h5>{chapter.name}</h5>
-        {isLoading && <Loader2 className="animate-spin" />}
+        {isPending && <Loader2 className="animate-spin" />}
       </div>
     );
   }

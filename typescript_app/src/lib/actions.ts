@@ -346,8 +346,8 @@ export async function courseTotalDuration(course: CourseWithUnits) {
       },
     });
 
-    const pathToRevalidate = course.id ? `/course/${course.id}/0/0` : "/";
-    revalidatePath(pathToRevalidate);
+    //const pathToRevalidate = course.id ? `/course/${course.id}/0/0` : "/";
+    //revalidatePath(pathToRevalidate);
   } catch (error) {
     console.error(error);
   }

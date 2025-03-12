@@ -7,6 +7,7 @@ export async function getKandinskyImage(prompt: string) {
 
   if (!response.ok) {
     console.log("KANDINSKY: response not ok");
+    console.log(response);
     return null;
   }
 
