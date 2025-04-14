@@ -11,14 +11,14 @@ from typing import Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
 
-class Kadninsky_impl:
+class Kandinsky_impl:
     def __init__(self, url: str, api_key: str, secret_key: str):
         self.URL = url
         self.AUTH_HEADERS = {
             'X-Key': f'Key {api_key}',
             'X-Secret': f'Secret {secret_key}',
         }
-        logger.info("Kadninsky_impl initialized")
+        logger.info("Kandinsky_impl initialized")
 
     async def get_model(self) -> str:
         try:

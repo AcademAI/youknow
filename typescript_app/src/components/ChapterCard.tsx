@@ -26,6 +26,7 @@ const ChapterCard = React.forwardRef<ChapterCardHandler, Props>(
       mutationFn: async () => {
         const response = await axios.post("/api/chapter/getInfo", {
           chapterId: chapter.id,
+        }, { timeout: 600000
         });
         return response.data;
       },

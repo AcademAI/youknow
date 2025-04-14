@@ -6,7 +6,7 @@ export async function checkResult(
   policies: string[]
 ) {
   const response = await fetch(
-    `${VALIDATIONS_URL}/call_openai?action=checkResult&title=${title}&units=${units}&policies=${policies}`
+    `${VALIDATIONS_URL}/call_chat?action=checkResult&title=${title}&units=${units}&policies=${policies}`
   );
   if (!response.ok) {
     console.log("checkResult fail");
@@ -23,7 +23,7 @@ export async function checkResult(
 
 export async function createUnitsNChapters(title: string, units: string[]) {
   const response = await fetch(
-    `${VALIDATIONS_URL}/call_openai?action=createUnitsNChapters&title=${title}&units=${units}`
+    `${VALIDATIONS_URL}/call_chat?action=createUnitsNChapters&title=${title}&units=${units}`
   );
   console.log(response);
   if (!response.ok) {
@@ -44,7 +44,7 @@ export async function createUnitsNChapters(title: string, units: string[]) {
 
 export async function createImageSearchTerm(title: string) {
   const response = await fetch(
-    `${VALIDATIONS_URL}/call_openai?action=createImageSearchTerm&title=${title}`
+    `${VALIDATIONS_URL}/call_chat?action=createImageSearchTerm&title=${title}`
   );
 
   if (!response.ok) {
@@ -65,7 +65,7 @@ export async function createImageSearchTerm(title: string) {
 
 export async function createYoutubeSummary(transcript: string) {
   const response = await fetch(
-    `${VALIDATIONS_URL}/call_openai?action=createYoutubeSummary&transcript=${transcript}`
+    `${VALIDATIONS_URL}/call_chat?action=createYoutubeSummary&transcript=${transcript}`
   );
 
   if (!response.ok) {
@@ -89,7 +89,7 @@ export async function getQuestionsFromTranscript(
   chapterName: string
 ) {
   const response = await fetch(
-    `${VALIDATIONS_URL}/call_openai?action=getQuestionsFromTranscript&transcript=${transcript}&chapterName=${chapterName}`
+    `${VALIDATIONS_URL}/call_chat?action=getQuestionsFromTranscript&transcript=${transcript}&chapterName=${chapterName}`
   );
 
   if (!response.ok) {

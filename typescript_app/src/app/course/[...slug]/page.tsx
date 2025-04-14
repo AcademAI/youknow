@@ -13,6 +13,7 @@ import { courseTotalDuration } from "@/lib/actions";
 
 import type { Metadata } from "next";
 import Chat from "@/components/ChatComponent";
+
 type Props = {
   params: {
     slug: string[];
@@ -78,7 +79,7 @@ const CoursePage = async ({ params}: Props) => {
                   <TabsList className="">
                     <TabsTrigger value="videoSummary">Сводка</TabsTrigger>
                     <TabsTrigger value="quizCards">Тест</TabsTrigger>
-                    <TabsTrigger value="chatAi">Чат с ИИ</TabsTrigger>
+                    {/*<TabsTrigger value="chatAi">Чат с ИИ</TabsTrigger> */}
                     <TabsTrigger value="courseSideBar">План</TabsTrigger>
                   </TabsList>
                   <TabsContent value="videoSummary">
@@ -87,7 +88,7 @@ const CoursePage = async ({ params}: Props) => {
                   <TabsContent value="quizCards">
                     <QuizCards chapter={chapter} session={session || ""} />
                   </TabsContent>
-                  <TabsContent value="chatAi">
+                  {/*<TabsContent value="chatAi">
                     {session?.user ? (
                       <Chat chapter={chapter} session={session} />
                     ) : (
@@ -95,7 +96,7 @@ const CoursePage = async ({ params}: Props) => {
                         Войдите в аккаунт, чтобы задать вопрос ИИ
                       </h1>
                     )}
-                  </TabsContent>
+                  </TabsContent> */}
                   <TabsContent value="courseSideBar">
                     <CourseSideBar
                       course={course}
@@ -112,12 +113,12 @@ const CoursePage = async ({ params}: Props) => {
               >
                 <TabsList>
                   <TabsTrigger value="videoSummary">Сводка</TabsTrigger>
-                  <TabsTrigger value="chatAi">Чат с ИИ</TabsTrigger>
+                  {/*<TabsTrigger value="chatAi">Чат с ИИ</TabsTrigger>*/}
                 </TabsList>
                 <TabsContent value="videoSummary">
                   <VideoSummary chapterSummary={chapter?.summary || ""} />
                 </TabsContent>
-                <TabsContent value="chatAi">
+                {/*<TabsContent value="chatAi">
                   {session?.user ? (
                     <Chat chapter={chapter} session={session} />
                   ) : (
@@ -125,7 +126,7 @@ const CoursePage = async ({ params}: Props) => {
                       Войдите в аккаунт, чтобы задать вопрос ИИ
                     </h1>
                   )}
-                </TabsContent>
+                </TabsContent>*/}
               </Tabs>
             </div>
             {/* Navigation links */}

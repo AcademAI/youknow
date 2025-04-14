@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     restart: unless-stopped
     #ports:
-    #  - "8080:3000"  # Maps host port 8080 to container port 3000 for local debug
+    #  - "3000:3000"  # Maps host port 8080 to container port 3000 for local debug
 
   mysql:
     container_name: mysql
@@ -28,6 +28,8 @@ services:
       context: ./youknow_validations
       dockerfile: Dockerfile
     restart: unless-stopped
+    volumes : 
+      - app1_logs:/app/logs   
 
   app2:
     container_name: youknow_ytscraper
@@ -36,6 +38,8 @@ services:
       context: ./youknow_ytscraper
       dockerfile: Dockerfile
     restart: unless-stopped
+    volumes : 
+      - app2_logs:/app/logs   
 
 networks:
   default:
@@ -44,3 +48,5 @@ networks:
 
 volumes:
   mysql_data:
+  app1_logs:    
+  app2_logs:    
