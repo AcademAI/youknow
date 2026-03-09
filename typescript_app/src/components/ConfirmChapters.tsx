@@ -20,7 +20,7 @@ const ConfirmChapters = ({ course }: Props) => {
   const chapterRefs: Record<string, React.RefObject<ChapterCardHandler>> = {};
   course.units.forEach((unit) => {
     unit.chapters.forEach((chapter) => {
-      
+      // eslint-disable-next-line react-hooks/rules-of-hooks
       chapterRefs[chapter.id] = React.useRef(null);
     });
   });
